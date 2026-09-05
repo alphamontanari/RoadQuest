@@ -6,140 +6,158 @@
 <title>Semana do Trânsito — Prefeitura de Itapetininga</title>
 <style>
 :root{
-  --ink:#10212a;
-  --paper:#f4f1df;
-  --panel:#172d38;
-  --panel2:#0e1f27;
+  --ink:#101820;
+  --paper:#ecebe6;
+  --panel:#17242c;
+  --panel2:#0b151b;
   --accent:#f4c542;
-  --green:#66bf70;
   --danger:#ef5350;
   --blue:#63a9d2;
-  --muted:#c9d3d8;
+  --muted:#cbd0d3;
+  --gray-ground:#74797d;
+  --gray-ground-2:#858a8e;
 }
 *{box-sizing:border-box}
-html,body{margin:0;background:#e9e6d5;color:var(--ink);font-family:"Courier New",monospace}
-body{padding:14px}
-.game-shell{width:min(100%,740px);margin:0 auto}
-.game-frame{position:relative;width:100%;max-width:656px;margin:0 auto;background:#071319;border:4px solid #10212a;box-shadow:0 0 0 4px #d6cfaa;overflow:hidden;outline:none}
-.canvas-wrap{position:relative;width:100%;aspect-ratio:656/450;background:#061117}
+html,body{margin:0;background:#d7d7d2;color:var(--ink);font-family:"Courier New",monospace}
+body{padding:10px;overflow-x:hidden}
+.game-shell{width:min(100%,540px);margin:0 auto}
+.game-frame{position:relative;width:100%;margin:0 auto;background:#070d11;border:3px solid #111b21;box-shadow:0 0 0 3px #b8b8b2;overflow:hidden;outline:none}
+.canvas-wrap{position:relative;width:100%;aspect-ratio:9/16;background:#0a1116;overflow:hidden}
 canvas{display:block;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges;touch-action:none}
-.hud{position:absolute;left:8px;right:8px;top:8px;display:grid;grid-template-columns:1fr auto auto;gap:6px;pointer-events:none;color:#fff;text-shadow:2px 2px #000;font-size:clamp(11px,2.4vw,15px);font-weight:700;z-index:2}
-.hud span{background:rgba(7,19,25,.9);border:2px solid rgba(255,255,255,.32);padding:6px 8px;white-space:nowrap}
-.hud .speed{font-size:clamp(13px,3vw,18px);border-color:var(--accent)}
+.top-fade{position:absolute;inset:0 0 auto 0;height:27%;background:linear-gradient(to bottom,rgba(5,11,15,.92) 0%,rgba(5,11,15,.72) 45%,rgba(5,11,15,0) 100%);pointer-events:none;z-index:1}
+.bottom-fade{position:absolute;inset:auto 0 0 0;height:25%;background:linear-gradient(to top,rgba(5,11,15,.54),rgba(5,11,15,0));pointer-events:none;z-index:1}
+.hud{position:absolute;left:3%;right:3%;top:1.3%;display:grid;grid-template-columns:1fr auto;gap:5px;color:#fff;text-shadow:2px 2px #000;font-size:clamp(10px,2.8vw,15px);font-weight:800;z-index:3;pointer-events:none}
+.hud span{background:rgba(7,15,20,.82);border:1.5px solid rgba(255,255,255,.54);padding:6px 8px;white-space:nowrap}
+.hud .speed{font-size:clamp(12px,3.4vw,18px);border-color:var(--accent)}
+.hud .score{grid-column:1/-1;justify-self:start}
 .hud .speed.over{background:#8d2020;border-color:#fff;animation:blink .28s steps(2,end) infinite}
 @keyframes blink{50%{opacity:.48}}
-.mission-ribbon{position:absolute;left:50%;top:54px;transform:translateX(-50%);width:min(88%,500px);padding:7px 10px;background:rgba(16,33,42,.94);border:3px solid #f4c542;color:white;text-align:center;font-size:clamp(11px,2.5vw,15px);font-weight:800;line-height:1.15;text-shadow:2px 2px #000;pointer-events:none;z-index:2}
-.toast{position:absolute;left:50%;top:100px;transform:translateX(-50%);width:min(88%,520px);padding:10px 14px;background:#071319;color:white;border:4px solid var(--accent);box-shadow:5px 5px 0 rgba(0,0,0,.5);font-size:clamp(14px,3.3vw,20px);line-height:1.15;font-weight:900;text-align:center;opacity:0;transition:opacity .1s;pointer-events:none;text-shadow:2px 2px #000;z-index:4}
+.mission-ribbon{position:absolute;left:50%;top:10.6%;transform:translateX(-50%);width:92%;padding:8px 10px;background:rgba(12,23,29,.90);border:2px solid var(--accent);color:white;text-align:center;font-size:clamp(10px,2.55vw,14px);font-weight:900;line-height:1.18;text-shadow:2px 2px #000;pointer-events:none;z-index:3}
+.toast{position:absolute;left:50%;top:17.1%;transform:translateX(-50%);width:88%;padding:10px 12px;background:rgba(7,16,21,.94);color:white;border:3px solid var(--accent);font-size:clamp(12px,3.1vw,18px);line-height:1.18;font-weight:900;text-align:center;opacity:0;transition:opacity .1s;pointer-events:none;text-shadow:2px 2px #000;z-index:5}
 .toast.show{opacity:1}
-.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(6,17,23,.9);z-index:6}
+.game-mute{position:absolute;right:3%;top:6.0%;z-index:5;appearance:none;border:1.5px solid rgba(255,255,255,.86);background:rgba(7,16,21,.55);color:#fff;min-width:42px;min-height:38px;padding:5px 8px;font:900 10px "Courier New",monospace;cursor:pointer;backdrop-filter:blur(2px)}
+.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:7%;background:rgba(5,11,15,.91);z-index:12}
 .overlay.hidden{display:none}
-.overlay-card{width:min(94%,520px);background:#142c37;color:#fff;border:4px solid #f4c542;box-shadow:8px 8px 0 #061117;padding:20px 18px;text-align:center}
-.overlay-card .eyebrow{display:inline-block;padding:5px 9px;background:#f4c542;color:#10212a;font-size:clamp(11px,2.4vw,14px);letter-spacing:.12em;font-weight:900;text-transform:uppercase}
-.overlay-card h1,.overlay-card h2{margin:10px 0 10px;line-height:1.02;text-transform:uppercase;text-shadow:3px 3px #061117}
-.overlay-card h1{font-size:clamp(27px,7vw,45px)}
-.overlay-card h2{font-size:clamp(25px,6.5vw,39px)}
-.overlay-card p{margin:8px auto 12px;max-width:44ch;line-height:1.38;font-size:clamp(13px,2.8vw,16px)}
-.mission-box{margin:12px auto;background:#0c2029;border:3px solid rgba(255,255,255,.22);padding:12px;text-align:left;max-width:440px}
-.mission-box strong{display:block;color:#f4c542;margin-bottom:5px;font-size:14px}
-.mission-box span{display:block;font-size:13px;line-height:1.35}
-.mission-limit{display:inline-block;margin-top:10px;padding:7px 10px;background:#fff;color:#13232b;border:4px solid #d84949;font-weight:900;font-size:17px}
-.overlay-tip{margin-top:10px!important;color:#dbe6ea;font-size:12px!important}
-.pixel-btn{appearance:none;border:0;background:#f4c542;color:#12222a;padding:12px 16px;font:900 14px "Courier New",monospace;text-transform:uppercase;box-shadow:4px 4px 0 #071319;cursor:pointer;min-height:44px}
+.overlay-card{width:100%;max-width:470px;background:rgba(20,34,43,.96);color:#fff;border:3px solid var(--accent);padding:22px 18px;text-align:center;position:relative;overflow:hidden}
+.overlay-card .eyebrow{display:inline-block;padding:5px 9px;background:var(--accent);color:#101820;font-size:clamp(10px,2.7vw,14px);letter-spacing:.10em;font-weight:900;text-transform:uppercase}
+.overlay-card h1,.overlay-card h2{margin:13px 0 11px;line-height:1.02;text-transform:uppercase;text-shadow:3px 3px #061117}
+.overlay-card h1{font-size:clamp(27px,8.2vw,48px)}
+.overlay-card h2{font-size:clamp(24px,7vw,40px)}
+.overlay-card p{margin:8px auto 14px;max-width:42ch;line-height:1.42;font-size:clamp(12px,3.1vw,16px)}
+.mission-box{margin:14px auto;background:#0c181f;border:2px solid rgba(255,255,255,.28);padding:14px;text-align:left;max-width:440px}
+.mission-box strong{display:block;color:var(--accent);margin-bottom:6px;font-size:14px}
+.mission-box span{display:block;font-size:13px;line-height:1.4}
+.mission-limit{display:inline-block;margin-top:11px;padding:8px 10px;background:#fff;color:#13232b;border:4px solid #d84949;font-weight:900;font-size:16px}
+.overlay-tip{margin-top:10px!important;color:#dbe1e4;font-size:11px!important}
+.pixel-btn{appearance:none;border:0;background:var(--accent);color:#12222a;padding:12px 16px;font:900 13px "Courier New",monospace;text-transform:uppercase;box-shadow:4px 4px 0 #071319;cursor:pointer;min-height:44px}
 .pixel-btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #071319}
-.pixel-btn.secondary{background:#d8e0e4}
-.sound-btn{margin-top:10px;font-size:12px;min-height:38px;padding:8px 12px}
-.game-mute{position:absolute;right:8px;bottom:8px;z-index:8;appearance:none;border:2px solid rgba(255,255,255,.7);background:rgba(7,19,25,.92);color:#fff;min-width:44px;min-height:44px;padding:6px 9px;font:900 11px "Courier New",monospace;box-shadow:3px 3px 0 rgba(0,0,0,.45);cursor:pointer}
-.game-mute:active{transform:translate(2px,2px);box-shadow:1px 1px 0 rgba(0,0,0,.45)}
-.top-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
-.touch-controls{display:none;max-width:656px;margin:12px auto 0;grid-template-columns:1fr 1fr;gap:10px;user-select:none;-webkit-user-select:none}
-.touch-panel{background:#172d38;border:3px solid #10212a;padding:10px;min-width:0}
-.touch-label{color:#fff;text-align:center;font-weight:800;font-size:11px;margin-bottom:8px;letter-spacing:.05em}
-.dpad{display:grid;grid-template-columns:repeat(3,58px);grid-template-rows:repeat(2,58px);gap:7px;justify-content:center}
-.actions{display:grid;grid-template-columns:repeat(2,minmax(62px,1fr));gap:9px;align-content:center}
-.touch-btn{appearance:none;border:0;background:#d7dfe3;color:#0e1f27;min-width:56px;min-height:56px;font:900 22px "Courier New",monospace;box-shadow:4px 4px 0 #071319;touch-action:none}
-.touch-btn small{font-size:9px;font-weight:900}
-.touch-btn.accel{background:#73c47a}.touch-btn.brake{background:#f0c25e}.touch-btn.horn{background:#80b7d6}.touch-btn.restart{background:#d88c8a;font-size:14px}.touch-btn.pause{font-size:14px}
-.touch-btn:active,.touch-btn.pressed{transform:translate(2px,2px);box-shadow:2px 2px 0 #071319}
-.control-help{max-width:656px;margin:12px auto 0;background:#f4f1df;border:3px solid #10212a;padding:14px 16px;font-size:14px;line-height:1.55}
-.control-help strong{display:block;margin-bottom:7px;font-size:16px}
-.keys{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:8px}
-kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;padding:0 8px;border:2px solid #10212a;background:white;box-shadow:2px 2px 0 #10212a;font:900 13px "Courier New",monospace}
-.note{font-size:13px;color:#43545c;margin-top:10px}
-@media (max-width:700px),(pointer:coarse){body{padding:8px}.touch-controls{display:grid}.control-help .desktop-only{display:none}.control-help{font-size:13px}.mission-ribbon{top:51px}.toast{top:96px}.overlay{padding:6px}.overlay-card{width:96%;padding:8px 10px;box-shadow:4px 4px 0 #061117}.overlay-card .eyebrow{font-size:9px;padding:3px 6px}.overlay-card h1,.overlay-card h2{font-size:20px;margin:5px 0 6px}.overlay-card>p#overlayText{display:none}.mission-box{margin:6px auto;padding:7px 8px}.mission-box strong{font-size:11px;margin-bottom:3px}.mission-box span{font-size:10px;line-height:1.22}.mission-limit{margin-top:6px;padding:4px 7px;border-width:3px;font-size:12px}.overlay-tip{display:none}.top-actions{margin-top:7px;gap:6px}.pixel-btn{min-height:34px;padding:7px 10px;font-size:11px;box-shadow:3px 3px 0 #071319}}
-@media (max-width:430px){.touch-controls{grid-template-columns:1fr}.touch-panel{padding:9px}.dpad{grid-template-columns:repeat(3,62px);grid-template-rows:repeat(2,62px)}.touch-btn{min-height:60px}.hud{grid-template-columns:1fr 1fr;gap:4px}.hud .score{grid-column:1/-1;justify-self:start}.mission-ribbon{top:86px;width:92%;font-size:11px}.toast{top:126px}.overlay-card h1,.overlay-card h2{font-size:18px}}
-@media (prefers-reduced-motion:reduce){.speed.over{animation:none}.toast{transition:none}}
-:focus-visible{outline:3px solid #e5aa00;outline-offset:3px}
+.pixel-btn.secondary{background:#d8dcde}
+.top-actions{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:13px}
+
+/* Intro animada */
+.intro-art{display:none;margin:18px auto 16px;width:78%;height:92px;position:relative;overflow:hidden;border-top:3px solid rgba(255,255,255,.7);border-bottom:3px solid rgba(255,255,255,.7);background:#343a40}
+.intro-road-line{position:absolute;left:50%;top:-36px;width:5px;height:170px;background:repeating-linear-gradient(to bottom,#e5cf61 0 22px,transparent 22px 42px);animation:introRoad 1s steps(6,end) infinite}
+.intro-car{position:absolute;width:28px;height:48px;left:calc(50% + 42px);bottom:13px;background:#2b78b8;border:4px solid #080808;animation:introCar 1.4s steps(2,end) infinite}
+.intro-car:before{content:"";position:absolute;left:4px;right:4px;top:5px;height:12px;background:#79b5d8}
+.intro-car:after{content:"";position:absolute;left:4px;right:4px;bottom:5px;height:6px;background:#d64d4d}
+.overlay.intro-mode .intro-art{display:block}
+.overlay.intro-mode .mission-box{display:none}
+.overlay.intro-mode .overlay-tip{font-size:clamp(10px,2.7vw,13px)!important}
+.overlay.intro-mode .overlay-card h1{animation:titlePulse 1.5s steps(2,end) infinite}
+@keyframes introRoad{to{transform:translateY(42px)}}
+@keyframes introCar{50%{transform:translateX(-5px)}}
+@keyframes titlePulse{50%{text-shadow:4px 4px #061117,0 0 0 transparent;transform:translateY(-2px)}}
+
+/* Controles mobile dentro da tela */
+.mobile-game-controls{position:absolute;left:0;right:0;bottom:2.4%;height:22%;z-index:7;display:flex;align-items:flex-end;justify-content:space-between;padding:0 3.2%;pointer-events:none;user-select:none;-webkit-user-select:none}
+.mobile-dpad{display:grid;grid-template-columns:repeat(3,clamp(44px,12vw,60px));grid-template-rows:repeat(3,clamp(44px,12vw,60px));gap:5px;pointer-events:auto}
+.mobile-actions{display:grid;grid-template-columns:repeat(2,clamp(48px,12.5vw,64px));gap:8px;pointer-events:auto;align-self:flex-end;margin-bottom:4px}
+.mobile-btn{appearance:none;background:rgba(10,18,23,.20);border:2px solid rgba(255,255,255,.92);color:#fff;min-width:46px;min-height:46px;font:900 clamp(18px,5vw,25px) "Courier New",monospace;text-shadow:2px 2px #000;touch-action:none;backdrop-filter:blur(1.5px);border-radius:4px}
+.mobile-btn small{display:block;font-size:8px;line-height:1.05;margin-top:2px}
+.mobile-btn:active,.mobile-btn.pressed{background:rgba(244,197,66,.34);transform:translateY(1px)}
+.mobile-center{border:1px solid rgba(255,255,255,.22);background:rgba(10,18,23,.10);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.55);font-size:9px}
+.mobile-actions .mobile-btn{font-size:13px;min-height:54px}
+.mobile-btn.up{grid-column:2;grid-row:1}.mobile-btn.left{grid-column:1;grid-row:2}.mobile-center{grid-column:2;grid-row:2}.mobile-btn.right{grid-column:3;grid-row:2}.mobile-btn.down{grid-column:2;grid-row:3}
+
+.orientation-guard{display:none;position:absolute;inset:0;background:#0a1116;color:white;z-index:30;align-items:center;justify-content:center;text-align:center;padding:24px;font-weight:900;line-height:1.4}
+.orientation-guard strong{display:block;color:var(--accent);font-size:21px;margin-bottom:10px}
+.control-help{max-width:540px;margin:10px auto 0;background:#ecebe6;border:2px solid #111b21;padding:11px 13px;font-size:12px;line-height:1.48}
+.control-help strong{display:block;margin-bottom:5px;font-size:13px}
+.keys{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:7px}
+kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px;height:29px;padding:0 7px;border:2px solid #10212a;background:white;box-shadow:2px 2px 0 #10212a;font:900 12px "Courier New",monospace}
+.note{font-size:11px;color:#435057;margin-top:7px}
+.sound-btn{font-size:11px;min-height:36px;padding:7px 10px;margin-top:8px}
+
+@media (hover:hover) and (pointer:fine){.mobile-game-controls{display:none}.game-shell{width:min(100%,470px)}}
+@media (max-width:520px){body{padding:0}.game-frame{border-width:0;box-shadow:none}.game-shell{width:100%}.control-help{margin:0;border-width:2px 0 0}.desktop-only{display:none}.overlay{padding:6%}.overlay-card{padding:19px 15px}.game-mute{top:6.0%;font-size:9px}.mission-ribbon{top:10.8%}.toast{top:17.4%}}
+@media (orientation:landscape) and (max-height:650px) and (pointer:coarse){.orientation-guard{display:flex}}
+@media (prefers-reduced-motion:reduce){.speed.over,.intro-road-line,.intro-car,.overlay.intro-mode .overlay-card h1{animation:none}.toast{transition:none}}
+:focus-visible{outline:3px solid #e5aa00;outline-offset:2px}
 </style>
 </head>
 <body>
 <main class="game-shell" id="gameShell">
   <section class="game-frame" id="gameRoot" tabindex="0" aria-label="Jogo educativo da Semana do Trânsito">
     <div class="canvas-wrap">
-      <canvas id="game" width="656" height="450" aria-label="Jogo 2D de trânsito visto de cima"></canvas>
+      <canvas id="game" width="1080" height="1920" aria-label="Jogo 2D vertical de trânsito visto de cima"></canvas>
+      <div class="top-fade" aria-hidden="true"></div>
+      <div class="bottom-fade" aria-hidden="true"></div>
+
       <div class="hud" aria-live="polite">
         <span id="levelHud">FASE 1/5</span>
         <span id="speedHud" class="speed">0 km/h</span>
         <span id="scoreHud" class="score">SEGURANÇA 000</span>
       </div>
-      <div id="missionRibbon" class="mission-ribbon">MISSÃO • LIMITE 40 km/h</div>
+      <div id="missionRibbon" class="mission-ribbon">SEMANA DO TRÂNSITO</div>
       <div id="toast" class="toast" aria-live="polite"></div>
       <button id="gameMuteBtn" class="game-mute" type="button" aria-pressed="false" aria-label="Desligar som">🔊 SOM</button>
-      <div id="overlay" class="overlay">
+
+      <div class="mobile-game-controls" aria-label="Controles do jogo no celular">
+        <div class="mobile-dpad">
+          <button class="mobile-btn up" data-key="up" type="button" aria-label="Acelerar">▲</button>
+          <button class="mobile-btn left" data-key="left" type="button" aria-label="Virar para a esquerda">◀</button>
+          <div class="mobile-center" aria-hidden="true">DIRIJA</div>
+          <button class="mobile-btn right" data-key="right" type="button" aria-label="Virar para a direita">▶</button>
+          <button class="mobile-btn down" data-key="down" type="button" aria-label="Frear">▼</button>
+        </div>
+        <div class="mobile-actions">
+          <button class="mobile-btn" data-tap="pause" type="button" aria-label="Pausar o jogo">Ⅱ<small>PAUSE</small></button>
+          <button class="mobile-btn" data-tap="restart" type="button" aria-label="Reiniciar a fase">↻<small>RESTART</small></button>
+        </div>
+      </div>
+
+      <div id="overlay" class="overlay intro-mode">
         <div class="overlay-card">
           <div id="overlayEyebrow" class="eyebrow">18 A 25 DE SETEMBRO</div>
           <h1 id="overlayTitle">SEMANA DO TRÂNSITO</h1>
-          <p id="overlayText">PREFEITURA DE ITAPETININGA</p>
+          <p id="overlayText">UMA CAMPANHA DA PREFEITURA DE ITAPETININGA</p>
+          <div class="intro-art" aria-hidden="true"><span class="intro-road-line"></span><span class="intro-car"></span></div>
           <div id="missionBox" class="mission-box">
             <strong>MISSÃO</strong>
             <span id="missionText">Complete os desafios com segurança.</span>
             <div id="missionLimit" class="mission-limit">LIMITE 40 km/h</div>
           </div>
-          <p id="overlayTip" class="overlay-tip">↑ acelera • ↓ ou ESPAÇO freia • ← → guiam • B buzina</p>
+          <p id="overlayTip" class="overlay-tip">▲ acelera • ▼ freia • ◀ ▶ dirigem</p>
           <div class="top-actions">
             <button id="startBtn" class="pixel-btn" type="button">Jogar</button>
-            <button id="fullscreenBtn" class="pixel-btn secondary" type="button">Expandir</button>
+            <button id="fullscreenBtn" class="pixel-btn secondary" type="button">Tela cheia</button>
           </div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <section class="touch-controls" aria-label="Controles para celular">
-    <div class="touch-panel">
-      <div class="touch-label">DIREÇÃO</div>
-      <div class="dpad">
-        <span></span><button class="touch-btn accel" data-key="up" type="button" aria-label="Acelerar">▲</button><span></span>
-        <button class="touch-btn" data-key="left" type="button" aria-label="Virar para esquerda">◀</button>
-        <button class="touch-btn brake" data-key="down" type="button" aria-label="Frear">▼</button>
-        <button class="touch-btn" data-key="right" type="button" aria-label="Virar para direita">▶</button>
+      <div id="orientationGuard" class="orientation-guard" aria-live="polite">
+        <div><strong>MANTENHA O CELULAR NA VERTICAL</strong>O jogo foi desenhado em 9:16 para preservar a pista, as mensagens e os controles.</div>
       </div>
-    </div>
-    <div class="touch-panel actions">
-      <button class="touch-btn horn" data-tap="horn" type="button" aria-label="Buzinar">B<br><small>BUZINA</small></button>
-      <button class="touch-btn brake" data-key="brake" type="button" aria-label="Freio forte">●<br><small>FREIO</small></button>
-      <button class="touch-btn pause" data-tap="pause" type="button">P<br><small>PAUSA</small></button>
-      <button class="touch-btn restart" data-tap="restart" type="button">R<br><small>REINICIAR</small></button>
     </div>
   </section>
 
   <aside class="control-help">
     <strong>COMO JOGAR</strong>
-    <div class="desktop-only">Clique no jogo e use o teclado:</div>
-    <div class="keys desktop-only">
-      <kbd>↑</kbd><kbd>W</kbd> acelerar
-      <kbd>↓</kbd><kbd>S</kbd> frear
-      <kbd>←</kbd><kbd>→</kbd><kbd>A</kbd><kbd>D</kbd> guiar
-      <kbd>ESPAÇO</kbd> freio forte
-      <kbd>B</kbd> buzina
-      <kbd>P</kbd> pausa
-      <kbd>R</kbd> reinicia
-      <kbd>M</kbd> som
-      <kbd>ENTER</kbd> iniciar/continuar
-    </div>
-    <div class="note"><strong style="display:inline;font-size:inherit">Regra geral:</strong> permaneça na mão correta, à direita das duas linhas amarelas contínuas. Entrar na contramão encerra a missão.</div>
-    <div class="note"><strong style="display:inline;font-size:inherit">No celular:</strong> o controle aparece imediatamente abaixo do jogo. A pista usa uma área-base de 656×450 px e escala proporcionalmente; ao expandir, os controles continuam disponíveis.</div>
-    <button id="soundBtn" class="pixel-btn secondary sound-btn" type="button" aria-pressed="false">🔊 SOM: LIGADO</button>
-    <div class="note desktop-only"><kbd>M</kbd> liga/desliga os sons e a música 8-bit.</div>
+    <div class="desktop-only">No computador: use as setas ou WASD para dirigir.</div>
+    <div class="keys desktop-only"><kbd>↑</kbd><kbd>W</kbd> acelerar <kbd>↓</kbd><kbd>S</kbd> frear <kbd>←</kbd><kbd>→</kbd><kbd>A</kbd><kbd>D</kbd> guiar <kbd>P</kbd> pausa <kbd>R</kbd> reinicia <kbd>M</kbd> som</div>
+    <div class="note">No celular, os controles ficam dentro da própria tela. ▲ acelera, ▼ freia, ◀ ▶ dirigem. Pause e Restart ficam no canto inferior direito.</div>
+    <div class="note"><strong style="display:inline;font-size:inherit">Regra geral:</strong> permaneça na mão correta, à direita da linha dupla amarela contínua. Entrar na contramão encerra a missão.</div>
+    <button id="soundBtn" class="pixel-btn secondary sound-btn desktop-only" type="button" aria-pressed="false">🔊 SOM: LIGADO</button>
   </aside>
 </main>
 <script>
@@ -168,40 +186,43 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
   const soundBtn = document.getElementById('soundBtn');
   const gameMuteBtn = document.getElementById('gameMuteBtn');
 
-  const W=656,H=450;
+  const CANVAS_W=1080,CANVAS_H=1920;
+  const W=656;
+  const DRAW_SCALE=CANVAS_W/W;
+  const H=CANVAS_H/DRAW_SCALE;
   const ROAD_L=174,ROAD_R=482,CENTER_X=328;
   const PLAYER_LANE_X=404,OPPOSITE_LANE_X=252;
-  const CAR_Y=350;
-  const MOVE_SCALE=4.0; // pixels de mundo por km/h por segundo
-  const keys={up:false,down:false,left:false,right:false,brake:false};
+  const CAR_Y=790;
+  const MOVE_SCALE=7.2; // cenário mais veloz para transmitir melhor 20–40 km/h no formato vertical
+  const keys={up:false,down:false,left:false,right:false};
 
   const levels=[
     {
-      title:'FASE 01',name:'CONTROLE A VELOCIDADE',limit:40,target:1120,
+      title:'FASE 01',name:'CONTROLE A VELOCIDADE',limit:40,target:2240,
       mission:'Percorra a avenida sem ultrapassar 40 km/h. Mantenha o carro na sua faixa.',
       ribbon:'MISSÃO • LIMITE 40 km/h • MANTENHA-SE NA FAIXA',
       success:'Chegar bem importa mais que chegar rápido.'
     },
     {
-      title:'FASE 02',name:'ÁREA ESCOLAR',limit:20,target:1080,
+      title:'FASE 02',name:'ÁREA ESCOLAR',limit:20,target:2160,
       mission:'Entre na área escolar a no máximo 20 km/h. Pare antes da primeira linha da faixa e só volte a acelerar depois que TODAS as crianças chegarem à outra calçada.',
       ribbon:'ÁREA ESCOLAR • 20 km/h • PARE ANTES DA FAIXA',
       success:'Proteja hoje o nosso futuro.'
     },
     {
-      title:'FASE 03',name:'O CRUZAMENTO',limit:40,target:790,
+      title:'FASE 03',name:'O CRUZAMENTO',limit:40,target:1580,
       mission:'Aproxime-se do cruzamento, pare antes da linha no sinal vermelho e só avance quando ficar verde.',
       ribbon:'CRUZAMENTO • PARE NO VERMELHO • SIGA NO VERDE',
       success:'No cruzamento, cada movimento tem sua vez.'
     },
     {
-      title:'FASE 04',name:'CRUZAMENTO + PEDESTRE',limit:40,target:1170,
+      title:'FASE 04',name:'CRUZAMENTO + PEDESTRE',limit:40,target:2340,
       mission:'Primeiro, pare no sinal vermelho e aguarde o verde para atravessar o cruzamento. Mais à frente, reduza, pare antes da faixa e espere o pedestre concluir a travessia.',
       ribbon:'1º CRUZAMENTO • DEPOIS FAIXA DE PEDESTRES • ATENÇÃO',
       success:'Sinalização e preferência trabalham juntas para tornar o caminho mais seguro.'
     },
     {
-      title:'FASE 05',name:'DESAFIO FINAL',limit:40,target:2260,
+      title:'FASE 05',name:'DESAFIO FINAL',limit:40,target:4520,
       mission:'Aplique tudo o que aprendeu: mantenha-se até 40 km/h, reduza na lombada, respeite a área escolar e a travessia das crianças, aguarde o sinal verde, dê preferência ao pedestre e estacione somente na vaga BRANCA — nunca na guia amarela ou em frente a garagens.',
       ribbon:'DESAFIO FINAL • 40 km/h • TODAS AS REGRAS',
       success:'Você aplicou todas as regras no mesmo trajeto. No trânsito, cada escolha segura conta.'
@@ -254,7 +275,6 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
       this.walkClock+=dt;
       if(this.walkClock>=.34){this.walkClock=0;this.note(165,.035,'square',.06);this.note(110,.025,'triangle',.035,.035);}
     },
-    horn(){this.init();this.note(315,.09,'square',.16);this.note(260,.09,'square',.12,.10);},
     bump(){this.note(105,.09,'square',.13);this.note(78,.12,'triangle',.09,.07);},
     success(){this.init();[523.25,659.25,783.99,1046.5].forEach((n,i)=>this.note(n,.17,'square',.15,i*.105));},
     fail(){this.init();[392,329.63,261.63,196].forEach((n,i)=>this.note(n,.20,'square',.13,i*.12));},
@@ -270,7 +290,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
     phase4Step:'intersection',phase4IntersectionDone:false,
     phase5Step:'bump',phase5BumpDone:false,phase5SchoolDone:false,phase5IntersectionDone:false,phase5PedDone:false,
     phase5LocalOver:0,phase5ParkingWarn:0,phase5BumpSound:false,
-    parkHold:0,hornFlash:0,hornCooldown:0,transition:false,result:null,
+    parkHold:0,transition:false,result:null,
     scenerySeed:0
   };
 
@@ -281,19 +301,19 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
     state.phase4Step='intersection';state.phase4IntersectionDone=false;
     state.phase5Step='bump';state.phase5BumpDone=false;state.phase5SchoolDone=false;state.phase5IntersectionDone=false;state.phase5PedDone=false;
     state.phase5LocalOver=0;state.phase5ParkingWarn=0;state.phase5BumpSound=false;
-    state.parkHold=0;state.hornFlash=0;state.hornCooldown=0;state.transition=false;state.result=null;state.scenerySeed=state.level*113;
+    state.parkHold=0;state.transition=false;state.result=null;state.scenerySeed=state.level*113;
     Object.keys(keys).forEach(k=>keys[k]=false);
   }
 
   function showIntro(){
     state.intro=true;state.running=false;state.paused=false;state.transition=false;state.result=null;
+    overlay.classList.add('intro-mode');
     overlayEyebrow.textContent='18 A 25 DE SETEMBRO';
     overlayTitle.textContent='SEMANA DO TRÂNSITO';
-    overlayText.textContent='PREFEITURA DE ITAPETININGA';
-    missionText.textContent='Cinco fases. Uma regra geral: fique na sua mão, respeite a sinalização e faça escolhas seguras para avançar.';
-    missionLimit.textContent='PASSE DE FASE COM SEGURANÇA';
-    missionLimit.style.display='inline-block';
-    overlayTip.textContent='↑/W acelera • ↓/S ou ESPAÇO freia • ← → / A D guiam • B buzina • M som';
+    overlayText.textContent='UMA CAMPANHA DA PREFEITURA DE ITAPETININGA';
+    missionText.textContent='';
+    missionLimit.style.display='none';
+    overlayTip.textContent='5 FASES • ESCOLHAS SEGURAS FAZEM VOCÊ AVANÇAR';
     startBtn.textContent='COMEÇAR';
     missionRibbon.textContent='SEMANA DO TRÂNSITO • 18 A 25 DE SETEMBRO';
     overlay.classList.remove('hidden');
@@ -302,13 +322,14 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
   function showMission(){
     state.intro=false;
     const l=levels[state.level];
+    overlay.classList.remove('intro-mode');
     overlayEyebrow.textContent='MISSÃO • '+l.title;
     overlayTitle.textContent=l.name;
     overlayText.textContent='Passe de fase cumprindo a regra de trânsito.';
     missionText.textContent=l.mission;
     missionLimit.textContent='LIMITE '+l.limit+' km/h';
     missionLimit.style.display='inline-block';
-    overlayTip.textContent='↑/W acelera • ↓/S ou ESPAÇO freia • ← → / A D guiam • B buzina • M som';
+    overlayTip.textContent='▲/W acelera • ▼/S freia • ◀ ▶ / A D dirigem • P pausa • R reinicia • M som';
     startBtn.textContent='INICIAR MISSÃO';
     missionRibbon.textContent=l.ribbon;
     overlay.classList.remove('hidden');
@@ -327,6 +348,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
 
   function fail(reason){
     if(state.transition)return;
+    overlay.classList.remove('intro-mode');
     state.transition=true;state.result='fail';state.running=false;audio.updateEngine(false,0);audio.fail();
     overlayEyebrow.textContent='MISSÃO INTERROMPIDA';
     overlayTitle.textContent='TENTE DE NOVO';
@@ -341,6 +363,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
 
   function complete(){
     if(state.transition)return;
+    overlay.classList.remove('intro-mode');
     state.transition=true;state.result='complete';state.running=false;state.score+=100;audio.updateEngine(false,0);audio.success();
     overlayEyebrow.textContent='FASE CONCLUÍDA • +100 SEGURANÇA';
     overlayTitle.textContent=state.level===levels.length-1?'VOCÊ ZEROU O JOGO!':'MISSÃO CUMPRIDA!';
@@ -369,11 +392,6 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
     state.paused=!state.paused;showToast(state.paused?'PAUSADO':'CONTINUE',.7);if(!state.paused)state.last=performance.now();
   }
 
-  function horn(){
-    if(state.hornCooldown>0)return;
-    state.hornFlash=.35;state.hornCooldown=.45;showToast('BIP! BIP!',.35);audio.horn();
-  }
-
   function updateSoundButton(){
     const muted=audio.muted;
     if(soundBtn){
@@ -388,22 +406,21 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
   }
 
   function effectiveLimit(){
-    if(state.level===4&&((state.phase5Step==='schoolApproach'&&state.distance>=470)||state.phase5Step==='schoolCrossing'))return 20;
+    if(state.level===4&&((state.phase5Step==='schoolApproach'&&state.distance>=940)||state.phase5Step==='schoolCrossing'))return 20;
     return levels[state.level].limit;
   }
 
-  function stopDistance(level){return level===1?720:level===2?700:level===3?700:null;}
+  function stopDistance(level){return level===1?1440:level===2?1400:level===3?1400:null;}
 
   function update(dt){
     if(!state.running||state.paused)return;
     state.levelTime+=dt;
     if(state.toastTimer>0){state.toastTimer-=dt;if(state.toastTimer<=0)toastEl.classList.remove('show');}
-    state.hornFlash=Math.max(0,state.hornFlash-dt);state.hornCooldown=Math.max(0,state.hornCooldown-dt);
-
+    
     const car=state.car;
     const l=levels[state.level];
     const accelRate=keys.up?23:0;
-    const braking=(keys.down||keys.brake)?42:0;
+    const braking=keys.down?46:0;
     const schoolCrossing=state.level===1&&state.phase==='schoolCrossing';
     const phase4PedCrossing=state.level===3&&state.phase4Step==='pedestrian'&&state.phase==='hold';
     const phase5SchoolCrossing=state.level===4&&state.phase5Step==='schoolCrossing';
@@ -478,8 +495,8 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
   }
 
   function updateSchool(dt){
-    const stopY=720;
-    if(state.distance>520 && !state.pedestrianAlert){state.pedestrianAlert=true;showToast('ÁREA ESCOLAR • REDUZA PARA 20',1.2);}
+    const stopY=1440;
+    if(state.distance>1040 && !state.pedestrianAlert){state.pedestrianAlert=true;showToast('ÁREA ESCOLAR • REDUZA PARA 20',1.2);}
     if(state.phase==='drive' && !state.crossDone && state.distance>=stopY-28){
       if(state.distance>stopY+7){fail('Você passou da linha de retenção. Na área escolar, pare antes da faixa.');return;}
       if(state.car.speed<1.4){
@@ -509,7 +526,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
   }
 
   function updateCrossing(dt){
-    const stopY=700;
+    const stopY=1400;
     const triggerDistance=stopY-(stopY*.20); // entra nos 20% finais de aproximação
     const greenDelay=7;
 
@@ -555,11 +572,11 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
   }
 
   function updatePhase4(dt){
-    const intersectionY=520;
+    const intersectionY=1040;
     const intersectionTrigger=intersectionY-(intersectionY*.20);
-    const intersectionExit=655;
+    const intersectionExit=1310;
     const greenDelay=7;
-    const pedestrianStopY=1010;
+    const pedestrianStopY=2020;
 
     // Etapa 1: repete a lógica aprendida na fase anterior.
     if(state.phase4Step==='intersection'){
@@ -651,18 +668,18 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
   }
 
   function updateFinalChallenge(dt){
-    const bumpY=300;
-    const schoolStopY=690;
-    const intersectionY=1130;
+    const bumpY=600;
+    const schoolStopY=1380;
+    const intersectionY=2260;
     const intersectionTrigger=intersectionY-(intersectionY*.20);
-    const intersectionExit=1265;
-    const pedStopY=1600;
-    const parkY=2035;
+    const intersectionExit=2530;
+    const pedStopY=3200;
+    const parkY=4070;
     const greenDelay=7;
 
     // 1/5 — Lombada: mantém a regra geral da Fase 1 (máximo 40 km/h).
     if(state.phase5Step==='bump'){
-      if(state.distance>=180&&!state.pedestrianAlert){state.pedestrianAlert=true;showToast('1/5 • LOMBADA À FRENTE • REDUZA',1.3);}
+      if(state.distance>=360&&!state.pedestrianAlert){state.pedestrianAlert=true;showToast('1/5 • LOMBADA À FRENTE • REDUZA',1.3);}
       if(state.distance>=bumpY-5){
         if(state.car.speed>40.3){fail('Você passou pela lombada acima de 40 km/h. Reduza antes do obstáculo.');return;}
         state.phase5BumpDone=true;state.phase5Step='schoolApproach';state.pedestrianAlert=false;
@@ -674,7 +691,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
 
     // 2/5 — Área escolar: 20 km/h e parada obrigatória antes da faixa.
     if(state.phase5Step==='schoolApproach'){
-      if(state.distance>=500&&!state.pedestrianAlert){state.pedestrianAlert=true;showToast('2/5 • ÁREA ESCOLAR • LIMITE 20',1.4);}
+      if(state.distance>=1000&&!state.pedestrianAlert){state.pedestrianAlert=true;showToast('2/5 • ÁREA ESCOLAR • LIMITE 20',1.4);}
       if(state.phase==='drive'&&state.distance>=schoolStopY-28){
         if(state.distance>schoolStopY+7){fail('Você passou da linha de retenção na área escolar. Pare antes da faixa.');return;}
         if(state.car.speed<1.4){
@@ -721,7 +738,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
 
     // 4/5 — Faixa de pedestres: só libera quando a travessia termina.
     if(state.phase5Step==='pedestrianApproach'){
-      if(state.distance>=1400&&!state.pedestrianAlert){state.pedestrianAlert=true;showToast('4/5 • PEDESTRE À FRENTE • REDUZA',1.3);}
+      if(state.distance>=2800&&!state.pedestrianAlert){state.pedestrianAlert=true;showToast('4/5 • PEDESTRE À FRENTE • REDUZA',1.3);}
       if(state.phase==='drive'&&state.distance>=pedStopY-28){
         if(state.distance>pedStopY+8){fail('Você passou pela faixa sem dar preferência ao pedestre.');return;}
         if(state.car.speed<1.4){state.distance=pedStopY-4;state.car.speed=0;state.phase='hold';state.phase5Step='pedestrianCrossing';state.holdTimer=0;state.crossT=0;showToast('4/5 • AGUARDE O PEDESTRE ATRAVESSAR',1.4);}
@@ -740,13 +757,13 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
 
     // 5/5 — Estacionamento no acostamento da rua.
     if(state.phase5Step==='parkingApproach'){
-      if(state.distance>=1780&&!state.pedestrianAlert){state.pedestrianAlert=true;showToast('5/5 • ESTACIONE SOMENTE NA ÁREA BRANCA',1.5);}
+      if(state.distance>=3560&&!state.pedestrianAlert){state.pedestrianAlert=true;showToast('5/5 • ESTACIONE SOMENTE NA ÁREA BRANCA',1.5);}
 
-      const inWhiteLong=Math.abs(state.distance-parkY)<54;
+      const inWhiteLong=Math.abs(state.distance-parkY)<108;
       const inWhiteLat=state.car.x>505&&state.car.x<552;
       const inWhite=inWhiteLong&&inWhiteLat;
       const inShoulder=state.car.x>492;
-      const yellowZone=(state.distance>1800&&state.distance<1905)||(state.distance>2145&&state.distance<2250);
+      const yellowZone=(state.distance>3600&&state.distance<3810)||(state.distance>4290&&state.distance<4500);
 
       if(state.car.speed<1.4&&inShoulder){
         if(yellowZone){
@@ -762,20 +779,23 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
       }else{
         state.parkHold=Math.max(0,state.parkHold-dt*.9);state.phase5ParkingWarn=Math.max(0,state.phase5ParkingWarn-dt*1.4);
       }
-      if(state.distance>2255&&!inWhite){fail('Você passou pela área de estacionamento. A vaga válida era a demarcada em branco.');return;}
+      if(state.distance>4510&&!inWhite){fail('Você passou pela área de estacionamento. A vaga válida era a demarcada em branco.');return;}
     }
   }
 
   function sy(worldY){return CAR_Y-(worldY-state.distance);}
 
   function draw(){
-    ctx.clearRect(0,0,W,H);
-    drawWorld();drawLevelObjects();drawCar(state.car.x,CAR_Y,state.hornFlash>0);
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.setTransform(DRAW_SCALE,0,0,DRAW_SCALE,0,0);
+    ctx.imageSmoothingEnabled=false;
+    drawWorld();drawLevelObjects();drawCar(state.car.x,CAR_Y);
     if(state.paused){ctx.fillStyle='rgba(5,12,16,.76)';ctx.fillRect(0,0,W,H);pixelText('PAUSADO',W/2,H/2,32,'#fff','center');}
   }
 
   function drawWorld(){
-    ctx.fillStyle='#477b47';ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#74797d';ctx.fillRect(0,0,W,H);
     drawScrollingGrass();
     ctx.fillStyle='#c6bda5';ctx.fillRect(ROAD_L-34,0,34,H);
     if(state.level===4){
@@ -801,7 +821,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
   }
 
   function drawScrollingGrass(){
-    const o=(state.distance*.35)%32;ctx.fillStyle='#4f8450';
+    const o=(state.distance*.35)%32;ctx.fillStyle='#858a8e';
     for(let y=-32+o;y<H+32;y+=32)for(let x=0;x<W;x+=32)if(((x/32+Math.floor((y-o)/32))&1)===0)ctx.fillRect(x,y,16,16);
   }
 
@@ -818,9 +838,13 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
 
   function drawScenery(){
     const spacing=180;
-    for(let i=-2;i<8;i++){
+    const minWorld=state.distance-(H-CAR_Y)-220;
+    const maxWorld=state.distance+CAR_Y+260;
+    const first=Math.floor((minWorld-state.scenerySeed-120)/spacing)-1;
+    const last=Math.ceil((maxWorld-state.scenerySeed-120)/spacing)+1;
+    for(let i=first;i<=last;i++){
       const world=i*spacing+120+state.scenerySeed;const y=sy(world);
-      if(y<-100||y>520)continue;
+      if(y<-120||y>H+120)continue;
       if(state.level===4){
         if(i%2===0)drawTree(88,y);else drawSmallBuilding(36,y-42,105,72,(i%3===0?'LOJA':'CASA'));
       }else if((i+state.level)%2===0){drawTree(88,y);drawTree(568,y+62);}else{drawSmallBuilding(36,y-42,105,72,(i%3===0?'LOJA':'CASA'));drawTree(575,y+20);}
@@ -836,18 +860,18 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
   }
 
   function drawLevel1(){
-    drawBigSpeedSign(535,sy(280),'40');
-    drawRoadNumber(sy(520),'40');
+    drawBigSpeedSign(535,sy(560),'40');
+    drawRoadNumber(sy(1040),'40');
     const finishY=sy(levels[0].target);if(finishY>-30&&finishY<H+30)drawFinishLine(finishY);
     drawOncomingCars();
   }
 
   function drawLevel2(){
-    const schoolY=sy(620);if(schoolY>-150&&schoolY<520)drawSchool(25,schoolY-80);
-    drawBigSpeedSign(535,sy(465),'20');drawRoadNumber(sy(535),'20');
-    const stop=sy(720);drawStopLineAndCrosswalk(stop);
+    const schoolY=sy(1240);if(schoolY>-150&&schoolY<H+100)drawSchool(25,schoolY-80);
+    drawBigSpeedSign(535,sy(930),'20');drawRoadNumber(sy(1070),'20');
+    const stop=sy(1440);drawStopLineAndCrosswalk(stop);
     const left=ROAD_L-18,right=ROAD_R+18;
-    if(stop>-90&&stop<520){
+    if(stop>-110&&stop<H+110){
       // Cada criança usa uma faixa horizontal levemente diferente para que o
       // movimento fique evidente e os sprites não se sobreponham.
       const ys=[stop-73,stop-60,stop-86];
@@ -872,7 +896,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
   }
 
   function drawLevel3(){
-    const crossY=sy(700);drawIntersection(crossY);
+    const crossY=sy(1400);drawIntersection(crossY);
     drawTrafficLight(510,crossY+22,state.lightGreen);
     if(state.signalTimerStarted&&!state.lightGreen)drawSignalCountdown();
     if(!state.lightGreen&&state.signalTimerStarted){
@@ -884,7 +908,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
 
   function drawLevel4(){
     // Primeiro obstáculo: cruzamento com semáforo.
-    const crossY=sy(520);
+    const crossY=sy(1040);
     drawIntersection(crossY);
     drawTrafficLight(510,crossY+22,state.lightGreen);
     if(state.signalTimerStarted&&!state.lightGreen)drawSignalCountdown();
@@ -895,10 +919,10 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
     }
 
     // Segundo obstáculo: faixa de pedestres, posicionada depois do cruzamento.
-    const stop=sy(1010);
+    const stop=sy(2020);
     drawStopLineAndCrosswalk(stop);
     const left=ROAD_L-18,right=ROAD_R+18;const py=stop-72;
-    if(stop>-90&&stop<520){
+    if(stop>-110&&stop<H+110){
       let x=left;
       let walking=false;
       if(state.crossDone)x=right+15;
@@ -909,17 +933,17 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
       drawWalkingPerson(x,py,'#f2c14e',walking?state.levelTime*10:0);
       if(state.phase4Step==='pedestrian')drawPedestrianCrossingStatus();
     }
-    if(stop>100&&stop<420)pixelBox('FAIXA DE\nPEDESTRES',505,stop+70,122,44);
+    if(stop>180&&stop<H-140)pixelBox('FAIXA DE\nPEDESTRES',505,stop+70,122,44);
   }
 
   function drawLevel5(){
     // 1/5 — limite e lombada
-    drawBigSpeedSign(535,sy(145),'40');drawRoadNumber(sy(205),'40');drawSpeedBump(sy(300));
+    drawBigSpeedSign(535,sy(290),'40');drawRoadNumber(sy(410),'40');drawSpeedBump(sy(600));
 
     // 2/5 — área escolar + crianças
-    const schoolStop=sy(690);const schoolY=sy(585);if(schoolY>-150&&schoolY<520)drawSchool(25,schoolY-80);
-    drawBigSpeedSign(535,sy(500),'20');drawStopLineAndCrosswalk(schoolStop);
-    if(schoolStop>-100&&schoolStop<540){
+    const schoolStop=sy(1380);const schoolY=sy(1170);if(schoolY>-150&&schoolY<H+100)drawSchool(25,schoolY-80);
+    drawBigSpeedSign(535,sy(1000),'20');drawStopLineAndCrosswalk(schoolStop);
+    if(schoolStop>-110&&schoolStop<H+110){
       const left=ROAD_L-18,right=ROAD_R+18,ys=[schoolStop-73,schoolStop-60,schoolStop-86],shirts=['#f3cd55','#e7785f','#6fa4d4'];
       for(let i=0;i<3;i++){
         const start=left-12-i*16;let x=start,walking=false;
@@ -931,13 +955,13 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
     }
 
     // 3/5 — cruzamento
-    const crossY=sy(1130);drawIntersection(crossY);drawTrafficLight(510,crossY+22,state.lightGreen);
+    const crossY=sy(2260);drawIntersection(crossY);drawTrafficLight(510,crossY+22,state.lightGreen);
     if(state.phase5Step==='intersectionApproach'&&state.signalTimerStarted&&!state.lightGreen)drawSignalCountdown();
     if(state.phase5Step==='intersectionApproach'&&!state.lightGreen&&state.signalTimerStarted){const q=(state.levelTime*110)%760-90;drawNpcCar(q,crossY-43,'#c95b5b',true);drawNpcCar(W-q,crossY+42,'#5f8cc9',true);}
 
     // 4/5 — pedestre
-    const pedStop=sy(1600);drawStopLineAndCrosswalk(pedStop);
-    if(pedStop>-100&&pedStop<540){
+    const pedStop=sy(3200);drawStopLineAndCrosswalk(pedStop);
+    if(pedStop>-110&&pedStop<H+110){
       const left=ROAD_L-18,right=ROAD_R+18,py=pedStop-72;let x=left,walking=false;
       if(state.phase5PedDone)x=right+15;
       else if(state.phase5Step==='pedestrianCrossing'){x=left+(right-left)*state.crossT;walking=state.crossT>0&&state.crossT<1;}
@@ -950,7 +974,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
   }
 
   function drawSpeedBump(y){
-    if(y<-80||y>520)return;
+    if(y<-100||y>H+100)return;
     ctx.fillStyle='#e1c84e';ctx.fillRect(ROAD_L+12,y-10,ROAD_R-ROAD_L-24,20);
     ctx.fillStyle='#20262b';for(let x=ROAD_L+18;x<ROAD_R-20;x+=28)ctx.fillRect(x,y-10,14,20);
     pixelBox('LOMBADA',30,y-17,112,32);
@@ -962,26 +986,26 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
 
   function drawFinalParkingStreet(){
     // Garagens: o trecho da guia correspondente fica amarelo e é proibido estacionar.
-    drawGarageFront(1810,'CASA 1');drawGarageFront(2160,'CASA 2');
-    drawYellowCurb(1800,1905);drawYellowCurb(2145,2250);
+    drawGarageFront(3620,'CASA 1');drawGarageFront(4320,'CASA 2');
+    drawYellowCurb(3600,3810);drawYellowCurb(4290,4500);
 
     // Vaga permitida: somente contorno branco sobre o acostamento, sem área verde artificial.
-    const seg=worldSegment(1981,2089);if(seg.bottom>-40&&seg.top<500){
-      const top=Math.max(-30,seg.top),bottom=Math.min(490,seg.bottom);
+    const seg=worldSegment(3962,4178);if(seg.bottom>-40&&seg.top<H+50){
+      const top=Math.max(-30,seg.top),bottom=Math.min(H+30,seg.bottom);
       ctx.strokeStyle='#f7f6ee';ctx.lineWidth=4;ctx.strokeRect(493,top,66,bottom-top);
       ctx.fillStyle='rgba(255,255,255,.06)';ctx.fillRect(497,top+4,58,Math.max(0,bottom-top-8));
       if(bottom-top>55)pixelText('VAGA',526,(top+bottom)/2,13,'#fff','center');
     }
-    if(state.distance>1760&&state.distance<2210)pixelBox('BRANCO = PODE\nAMARELO = NÃO',24,116,145,48);
+    if(state.distance>3520&&state.distance<4420)pixelBox('BRANCO = PODE\nAMARELO = NÃO',24,285,145,48);
   }
 
   function drawYellowCurb(a,b){
-    const seg=worldSegment(a,b);if(seg.bottom<-20||seg.top>470)return;
-    ctx.fillStyle='#f1c641';ctx.fillRect(560,Math.max(-10,seg.top),7,Math.min(480,seg.bottom)-Math.max(-10,seg.top));
+    const seg=worldSegment(a,b);if(seg.bottom<-20||seg.top>H+20)return;
+    ctx.fillStyle='#f1c641';ctx.fillRect(560,Math.max(-10,seg.top),7,Math.min(H+10,seg.bottom)-Math.max(-10,seg.top));
   }
 
   function drawGarageFront(worldY,label){
-    const y=sy(worldY);if(y<-150||y>540)return;
+    const y=sy(worldY);if(y<-150||y>H+120)return;
     const top=y-55;
     // entrada/guia rebaixada
     ctx.fillStyle='#9a9484';ctx.fillRect(566,top+36,39,56);
@@ -993,11 +1017,11 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
   }
 
   function drawOncomingCars(){
-    const positions=[340,720,980];positions.forEach((p,i)=>{const y=sy(p-((state.levelTime*(18+i*5))%120));if(y>-50&&y<500)drawNpcCar(OPPOSITE_LANE_X,y,i%2?'#b95f59':'#638cc4',false);});
+    const positions=[680,1440,1960];positions.forEach((p,i)=>{const y=sy(p-((state.levelTime*(18+i*5))%120));if(y>-60&&y<H+80)drawNpcCar(OPPOSITE_LANE_X,y,i%2?'#b95f59':'#638cc4',false);});
   }
 
   function drawStopLineAndCrosswalk(stopY){
-    if(stopY<-110||stopY>540)return;
+    if(stopY<-110||stopY>H+110)return;
     // O veículo vem de baixo para cima. A linha de retenção fica ANTES da
     // zebra e sempre alguns pixels à frente do para-choque do carro parado.
     ctx.fillStyle='#f6f4e9';
@@ -1007,7 +1031,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
   }
 
   function drawIntersection(y){
-    if(y<-120||y>570)return;
+    if(y<-120||y>H+120)return;
     ctx.fillStyle='#343a40';ctx.fillRect(0,y-55,W,110);
     // A rua transversal também usa linha dupla amarela contínua. Como na via real,
     // a marcação termina antes da área interna do cruzamento e recomeça depois dela.
@@ -1019,28 +1043,28 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
 
   function drawSignalCountdown(){
     const remaining=Math.max(0,Math.ceil(7-state.signalTimer));
-    const x=226,y=118,w=204,h=46;
+    const x=198,y=205,w=260,h=62;
     ctx.fillStyle='rgba(7,19,25,.96)';ctx.fillRect(x,y,w,h);
     ctx.strokeStyle='#ef5350';ctx.lineWidth=3;ctx.strokeRect(x,y,w,h);
-    pixelText('SINAL VERMELHO',x+w/2,y+14,12,'#fff','center');
-    pixelText('VERDE EM '+remaining+'s',x+w/2,y+33,15,'#f4c542','center');
+    pixelText('SINAL VERMELHO',x+w/2,y+18,14,'#fff','center');
+    pixelText('VERDE EM '+remaining+'s',x+w/2,y+43,18,'#f4c542','center');
   }
 
 
   function drawBigSpeedSign(x,y,val){
-    if(y<-90||y>520)return;
+    if(y<-90||y>H+100)return;
     ctx.fillStyle='#666e73';ctx.fillRect(x-3,y+40,6,54);
     ctx.fillStyle='#f7f5ec';ctx.fillRect(x-33,y-26,66,66);ctx.fillStyle='#d84a4a';ctx.fillRect(x-33,y-26,66,8);ctx.fillRect(x-33,y+32,66,8);ctx.fillRect(x-33,y-26,8,66);ctx.fillRect(x+25,y-26,8,66);
     pixelText(val,x,y+7,28,'#172d38','center');pixelText('km/h',x,y+55,10,'#fff','center');
   }
 
-  function drawRoadNumber(y,val){if(y<-80||y>500)return;ctx.save();ctx.globalAlpha=.82;pixelText(val,PLAYER_LANE_X,y,42,'#e9e5cf','center');ctx.restore();}
+  function drawRoadNumber(y,val){if(y<-80||y>H+80)return;ctx.save();ctx.globalAlpha=.82;pixelText(val,PLAYER_LANE_X,y,42,'#e9e5cf','center');ctx.restore();}
   function drawFinishLine(y){ctx.fillStyle='#eee';ctx.fillRect(ROAD_L,y,ROAD_R-ROAD_L,10);ctx.fillStyle='#111';for(let x=ROAD_L;x<ROAD_R;x+=24)ctx.fillRect(x,y,12,10);pixelBox('CHEGADA',30,y-18,110,30);}
 
-  function drawSchool(x,y){if(y<-130||y>520)return;ctx.fillStyle='#ddb85b';ctx.fillRect(x,y,120,105);ctx.fillStyle='#b44545';ctx.fillRect(x-10,y-12,140,18);ctx.fillStyle='#5f7f9a';ctx.fillRect(x+18,y+25,25,22);ctx.fillRect(x+78,y+25,25,22);ctx.fillStyle='#6e4f39';ctx.fillRect(x+45,y+59,31,46);pixelText('ESCOLA',x+60,y+15,12,'#172d38','center');}
+  function drawSchool(x,y){if(y<-130||y>H+120)return;ctx.fillStyle='#ddb85b';ctx.fillRect(x,y,120,105);ctx.fillStyle='#b44545';ctx.fillRect(x-10,y-12,140,18);ctx.fillStyle='#5f7f9a';ctx.fillRect(x+18,y+25,25,22);ctx.fillRect(x+78,y+25,25,22);ctx.fillStyle='#6e4f39';ctx.fillRect(x+45,y+59,31,46);pixelText('ESCOLA',x+60,y+15,12,'#172d38','center');}
   function drawSmallBuilding(x,y,w,h,label){ctx.fillStyle='#8b5e4a';ctx.fillRect(x,y,w,h);ctx.fillStyle='#c98a64';ctx.fillRect(x+6,y+6,w-12,h-12);ctx.fillStyle='#4f6c7d';ctx.fillRect(x+14,y+20,18,14);ctx.fillRect(x+w-34,y+20,18,14);pixelText(label,x+w/2,y+h-10,9,'#fff','center');}
-  function drawTree(x,y){ctx.fillStyle='#5c3c2b';ctx.fillRect(x-5,y,10,22);ctx.fillStyle='#2f6b3d';ctx.fillRect(x-17,y-22,34,26);ctx.fillStyle='#3f7c47';ctx.fillRect(x-11,y-32,22,14);}
-  function drawTrafficLight(x,y,green){if(y<-100||y>540)return;ctx.fillStyle='#18232a';ctx.fillRect(x,y-74,30,70);ctx.fillStyle=green?'#5b2626':'#ef5350';ctx.fillRect(x+9,y-63,12,12);ctx.fillStyle='#5e5127';ctx.fillRect(x+9,y-43,12,12);ctx.fillStyle=green?'#4caf50':'#234d2b';ctx.fillRect(x+9,y-23,12,12);ctx.fillStyle='#555';ctx.fillRect(x+13,y-4,5,44);}
+  function drawTree(x,y){ctx.fillStyle='#5c3c2b';ctx.fillRect(x-5,y,10,22);ctx.fillStyle='#62686c';ctx.fillRect(x-17,y-22,34,26);ctx.fillStyle='#777d81';ctx.fillRect(x-11,y-32,22,14);}
+  function drawTrafficLight(x,y,green){if(y<-100||y>H+120)return;ctx.fillStyle='#18232a';ctx.fillRect(x,y-74,30,70);ctx.fillStyle=green?'#5b2626':'#ef5350';ctx.fillRect(x+9,y-63,12,12);ctx.fillStyle='#5e5127';ctx.fillRect(x+9,y-43,12,12);ctx.fillStyle=green?'#4caf50':'#234d2b';ctx.fillRect(x+9,y-23,12,12);ctx.fillStyle='#555';ctx.fillRect(x+13,y-4,5,44);}
   function drawNpcCar(x,y,color,horizontal=false){ctx.save();ctx.translate(Math.round(x),Math.round(y));if(horizontal)ctx.rotate(Math.PI/2);ctx.fillStyle='#0a0a0a';ctx.fillRect(-13,-22,26,44);ctx.fillStyle=color;ctx.fillRect(-10,-20,20,40);ctx.fillStyle='#a6d0df';ctx.fillRect(-7,-12,14,11);ctx.fillStyle='#163443';ctx.fillRect(-7,3,14,9);ctx.restore();}
   function drawPerson(x,y,shirt){ctx.fillStyle='#6b4932';ctx.fillRect(x-4,y-12,8,7);ctx.fillStyle=shirt;ctx.fillRect(x-6,y-5,12,12);ctx.fillStyle='#222';ctx.fillRect(x-5,y+7,4,8);ctx.fillRect(x+1,y+7,4,8);}
   function drawWalkingPerson(x,y,shirt,step){
@@ -1055,24 +1079,24 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
     ctx.restore();
   }
   function drawCrossingStatus(done){
-    const x=226,y=120,w=204,h=43;
+    const x=188,y=205,w=280,h=58;
     ctx.fillStyle='rgba(7,19,25,.96)';ctx.fillRect(x,y,w,h);
     ctx.strokeStyle='#f4c542';ctx.lineWidth=3;ctx.strokeRect(x,y,w,h);
-    pixelText('CRIANÇAS ATRAVESSANDO',x+w/2,y+13,12,'#fff','center');
-    ctx.fillStyle='#253943';ctx.fillRect(x+12,y+27,w-24,8);
-    ctx.fillStyle='#66bf70';ctx.fillRect(x+12,y+27,(w-24)*state.crossT,8);
-    pixelText(done+'/3',x+w-18,y+31,9,'#fff','center');
+    pixelText('CRIANÇAS ATRAVESSANDO',x+w/2,y+17,14,'#fff','center');
+    ctx.fillStyle='#253943';ctx.fillRect(x+14,y+37,w-28,10);
+    ctx.fillStyle='#b8bec2';ctx.fillRect(x+14,y+37,(w-28)*state.crossT,10);
+    pixelText(done+'/3',x+w-22,y+42,10,'#fff','center');
   }
   function drawPedestrianCrossingStatus(){
-    const x=226,y=120,w=204,h=43;
+    const x=188,y=205,w=280,h=58;
     ctx.fillStyle='rgba(7,19,25,.96)';ctx.fillRect(x,y,w,h);
     ctx.strokeStyle='#f4c542';ctx.lineWidth=3;ctx.strokeRect(x,y,w,h);
-    pixelText('PEDESTRE ATRAVESSANDO',x+w/2,y+13,12,'#fff','center');
-    ctx.fillStyle='#253943';ctx.fillRect(x+12,y+27,w-24,8);
-    ctx.fillStyle='#66bf70';ctx.fillRect(x+12,y+27,(w-24)*state.crossT,8);
+    pixelText('PEDESTRE ATRAVESSANDO',x+w/2,y+17,14,'#fff','center');
+    ctx.fillStyle='#253943';ctx.fillRect(x+14,y+37,w-28,10);
+    ctx.fillStyle='#b8bec2';ctx.fillRect(x+14,y+37,(w-28)*state.crossT,10);
   }
-  function drawCar(x,y,hornOn){
-    ctx.save();ctx.translate(Math.round(x),Math.round(y));ctx.fillStyle='rgba(0,0,0,.28)';ctx.fillRect(-15,-20,30,44);ctx.fillStyle='#080808';ctx.fillRect(-14,-22,28,44);ctx.fillStyle='#2b78b8';ctx.fillRect(-11,-20,22,40);ctx.fillStyle='#79b5d8';ctx.fillRect(-8,-13,16,11);ctx.fillStyle='#15384f';ctx.fillRect(-8,3,16,9);ctx.fillStyle='#f2d067';ctx.fillRect(-9,-19,6,4);ctx.fillRect(3,-19,6,4);ctx.fillStyle='#d64d4d';ctx.fillRect(-9,15,6,4);ctx.fillRect(3,15,6,4);if(hornOn)pixelBox('BIP!',20,-35,55,25);ctx.restore();
+  function drawCar(x,y){
+    ctx.save();ctx.translate(Math.round(x),Math.round(y));ctx.fillStyle='rgba(0,0,0,.28)';ctx.fillRect(-15,-20,30,44);ctx.fillStyle='#080808';ctx.fillRect(-14,-22,28,44);ctx.fillStyle='#2b78b8';ctx.fillRect(-11,-20,22,40);ctx.fillStyle='#79b5d8';ctx.fillRect(-8,-13,16,11);ctx.fillStyle='#15384f';ctx.fillRect(-8,3,16,9);ctx.fillStyle='#f2d067';ctx.fillRect(-9,-19,6,4);ctx.fillRect(3,-19,6,4);ctx.fillStyle='#d64d4d';ctx.fillRect(-9,15,6,4);ctx.fillRect(3,15,6,4);ctx.restore();
   }
   function pixelBox(text,x,y,w,h){ctx.fillStyle='#071319';ctx.fillRect(x,y,w,h);ctx.strokeStyle='#f4c542';ctx.lineWidth=3;ctx.strokeRect(x,y,w,h);const lines=text.split('\n');lines.forEach((line,i)=>pixelText(line,x+w/2,y+h/2+(i-(lines.length-1)/2)*13,11,'#fff','center'));}
   function pixelText(text,x,y,size,color,align='left'){ctx.save();ctx.font='900 '+size+'px Courier New, monospace';ctx.textAlign=align;ctx.textBaseline='middle';ctx.fillStyle='#061117';ctx.fillText(text,x+2,y+2);ctx.fillStyle=color;ctx.fillText(text,x,y);ctx.restore();}
@@ -1083,20 +1107,21 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
   function mapKey(e,val){
     if(['INPUT','TEXTAREA','SELECT','BUTTON'].includes(e.target.tagName))return;
     const k=e.key.toLowerCase();let handled=true;
-    if(k==='arrowup'||k==='w')setKey('up',val);else if(k==='arrowdown'||k==='s')setKey('down',val);else if(k==='arrowleft'||k==='a')setKey('left',val);else if(k==='arrowright'||k==='d')setKey('right',val);else if(k===' ')setKey('brake',val);else handled=false;
-    if(val&&k==='b'){horn();handled=true;}if(val&&k==='p'){togglePause();handled=true;}if(val&&k==='r'){resetState();showMission();handled=true;}if(val&&k==='m'){audio.toggle();handled=true;}if(val&&k==='enter'){advanceOverlay();handled=true;}
+    if(k==='arrowup'||k==='w')setKey('up',val);else if(k==='arrowdown'||k==='s')setKey('down',val);else if(k==='arrowleft'||k==='a')setKey('left',val);else if(k==='arrowright'||k==='d')setKey('right',val);else handled=false;
+    if(val&&k==='p'){togglePause();handled=true;}if(val&&k==='r'){resetState();showMission();handled=true;}if(val&&k==='m'){audio.toggle();handled=true;}if(val&&k==='enter'){advanceOverlay();handled=true;}
     if(handled)e.preventDefault();
   }
   root.addEventListener('keydown',e=>mapKey(e,true));root.addEventListener('keyup',e=>mapKey(e,false));root.addEventListener('pointerdown',()=>root.focus({preventScroll:true}));
 
   document.querySelectorAll('[data-key]').forEach(btn=>{const name=btn.dataset.key;const down=e=>{e.preventDefault();btn.classList.add('pressed');setKey(name,true);root.focus({preventScroll:true});};const up=e=>{e.preventDefault();btn.classList.remove('pressed');setKey(name,false);};btn.addEventListener('pointerdown',down);btn.addEventListener('pointerup',up);btn.addEventListener('pointercancel',up);btn.addEventListener('pointerleave',up);});
-  document.querySelectorAll('[data-tap]').forEach(btn=>btn.addEventListener('click',()=>{if(btn.dataset.tap==='horn')horn();if(btn.dataset.tap==='pause')togglePause();if(btn.dataset.tap==='restart'){resetState();showMission();}}));
+  document.querySelectorAll('[data-tap]').forEach(btn=>btn.addEventListener('click',()=>{if(btn.dataset.tap==='pause')togglePause();if(btn.dataset.tap==='restart'){resetState();showMission();}}));
 
   startBtn.addEventListener('click',advanceOverlay);
   soundBtn.addEventListener('click',()=>audio.toggle());
   gameMuteBtn.addEventListener('click',e=>{e.stopPropagation();audio.toggle();});
-  fullscreenBtn.addEventListener('click',async()=>{if(!document.fullscreenEnabled){showToast('TELA CHEIA NÃO DISPONÍVEL',1.2);return;}try{if(!document.fullscreenElement)await shell.requestFullscreen();else await document.exitFullscreen();}catch(e){showToast('TELA CHEIA NÃO DISPONÍVEL',1.2);}});
+  fullscreenBtn.addEventListener('click',async()=>{if(!document.fullscreenEnabled){showToast('TELA CHEIA NÃO DISPONÍVEL',1.2);return;}try{if(!document.fullscreenElement){await shell.requestFullscreen();try{if(screen.orientation&&screen.orientation.lock)await screen.orientation.lock('portrait-primary');}catch(_e){}}else await document.exitFullscreen();}catch(e){showToast('TELA CHEIA NÃO DISPONÍVEL',1.2);}});
   document.addEventListener('visibilitychange',()=>{if(document.hidden&&state.running)state.paused=true;});
+  window.addEventListener('orientationchange',()=>{if(window.matchMedia('(orientation: landscape)').matches&&state.running){state.paused=true;}else if(state.paused){state.last=performance.now();}});
 
   setInterval(()=>{
     const l=levels[state.level];
@@ -1125,7 +1150,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:32px
     }else if(state.level===4&&state.phase5Step==='bump'){
       missionRibbon.textContent='1/5 • ATÉ 40 km/h • LOMBADA À FRENTE • REDUZA';
     }else if(state.level===4&&state.phase5Step==='schoolApproach'){
-      missionRibbon.textContent=state.distance<470?'2/5 • ÁREA ESCOLAR À FRENTE • REDUZA PARA 20':'2/5 • ÁREA ESCOLAR • 20 km/h • PARE ANTES DA FAIXA';
+      missionRibbon.textContent=state.distance<940?'2/5 • ÁREA ESCOLAR À FRENTE • REDUZA PARA 20':'2/5 • ÁREA ESCOLAR • 20 km/h • PARE ANTES DA FAIXA';
     }else if(state.level===4&&state.phase5Step==='schoolCrossing'){
       const done=[0,1,2].filter(i=>schoolChildProgress(i)>=1).length;missionRibbon.textContent='2/5 • CRIANÇAS ATRAVESSANDO '+done+'/3 • AGUARDE';
     }else if(state.level===4&&state.phase5Step==='intersectionApproach'&&!state.lightGreen){

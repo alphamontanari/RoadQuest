@@ -1,49 +1,38 @@
 SEMANA DO TRÂNSITO — PREFEITURA DE ITAPETININGA
-Período: 18 a 25 de setembro
+Versão mobile-first de produção
 
-ARQUIVO PRINCIPAL
-- index.html
-- Aplicação autocontida: HTML + CSS + JavaScript + áudio 8-bit sintetizado no navegador.
-- Não depende de bibliotecas, imagens, fontes ou arquivos de áudio externos.
+FORMATO
+- Canvas interno: 1080 x 1920 px (9:16)
+- Layout: width 100%, responsivo à largura do dispositivo
+- Orientação principal: vertical/retrato
+- Em celular na horizontal, o jogo exibe uma proteção pedindo retorno à vertical
+- Em tela cheia, o código tenta bloquear portrait quando o navegador oferece suporte
 
-ÁREA DO GAME
-- Canvas base: 656 x 450 px.
-- Responsivo/mobile-first.
-- Controles touch aparecem abaixo do jogo em telas móveis.
+CONTROLES MOBILE
+- ▲ acelerar
+- ▼ frear
+- ◀ esquerda
+- ▶ direita
+- Pause
+- Restart
+- Som/Mudo dentro da tela
 
 CONTROLES DESKTOP
-- W / seta para cima: acelerar
-- S / seta para baixo: frear
-- A/D ou setas esquerda/direita: dirigir
-- Espaço: freio forte
-- B: buzina
+- Setas ou WASD: dirigir
 - P: pausa
-- R: reiniciar fase
-- M: ligar/desligar som
-- Enter: iniciar/continuar
+- R: reinicia a fase
+- M: som/mudo
+- Enter: avançar telas
 
-CONTROLE DE SOM
-- Botão SOM/MUDO dentro do próprio quadro do game.
-- Botão SOM: LIGADO/DESLIGADO abaixo do jogo.
-- Tecla M no desktop.
+UX/UI
+- Mensagens e HUD em área segura no topo
+- Controles touch dentro da tela, com canal alpha e contorno branco
+- Área de circulação e paisagismo em tons de cinza
+- Linha dupla amarela contínua separando os sentidos
+- Contramão encerra a missão
+- Buzina removida
+- Música e efeitos 8-bit sintetizados pelo navegador
 
-REGRA GERAL DE VIA
-- Duas linhas amarelas contínuas separam as mãos de direção.
-- O jogador deve permanecer na faixa da direita.
-- Invadir a linha dupla gera alerta; entrar na contramão encerra a missão.
-
-FASES
-1. Controle de velocidade — até 40 km/h.
-2. Área escolar — até 20 km/h, parada e travessia das crianças.
-3. Cruzamento — vermelho, timer, verde e passagem.
-4. Cruzamento + faixa de pedestres.
-5. Desafio final — lombada, escola, cruzamento, pedestre e estacionamento em vaga branca.
-
-TELA INICIAL
-SEMANA DO TRÂNSITO
-18 A 25 DE SETEMBRO
-PREFEITURA DE ITAPETININGA
-
-PUBLICAÇÃO
-O arquivo index.html pode ser hospedado diretamente ou incorporado via iframe.
-Veja embed-exemplo.html.
+ARQUIVOS
+- index.html: jogo completo e autocontido
+- embed-exemplo.html: exemplo de incorporação 9:16
