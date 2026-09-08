@@ -1,38 +1,17 @@
-SEMANA DO TRÂNSITO — PREFEITURA DE ITAPETININGA
-Versão mobile-first de produção
+SEMANA DO TRÂNSITO — VERSÃO COM COMPARTILHAMENTO
 
-FORMATO
-- Canvas interno: 1080 x 1920 px (9:16)
-- Layout: width 100%, responsivo à largura do dispositivo
-- Orientação principal: vertical/retrato
-- Em celular na horizontal, o jogo exibe uma proteção pedindo retorno à vertical
-- Em tela cheia, o código tenta bloquear portrait quando o navegador oferece suporte
+1. Publicar index.html e semana-transito-compartilhamento.png na mesma área do site.
 
-CONTROLES MOBILE
-- ▲ acelerar
-- ▼ frear
-- ◀ esquerda
-- ▶ direita
-- Pause
-- Restart
-- Som/Mudo dentro da tela
+2. Antes da publicação definitiva, alterar no index.html:
+   - SHARE_URL
+   - meta og:url
+   - meta og:image
+   - meta twitter:image
 
-CONTROLES DESKTOP
-- Setas ou WASD: dirigir
-- P: pausa
-- R: reinicia a fase
-- M: som/mudo
-- Enter: avançar telas
+3. Compartilhamento:
+   - Na abertura: botão discreto “Compartilhar o game”.
+   - No celular: usa a folha nativa de compartilhamento do sistema quando disponível.
+   - Ao finalizar o jogo: painel de compartilhamento em destaque com WhatsApp, Facebook, X e Copiar link.
+   - A imagem Open Graph é usada no preview de WhatsApp/Facebook/X quando o endereço publicado puder ser lido pelas plataformas.
 
-UX/UI
-- Mensagens e HUD em área segura no topo
-- Controles touch dentro da tela, com canal alpha e contorno branco
-- Área de circulação e paisagismo em tons de cinza
-- Linha dupla amarela contínua separando os sentidos
-- Contramão encerra a missão
-- Buzina removida
-- Música e efeitos 8-bit sintetizados pelo navegador
-
-ARQUIVOS
-- index.html: jogo completo e autocontido
-- embed-exemplo.html: exemplo de incorporação 9:16
+4. A jogabilidade e as regras do game não foram alteradas nesta versão.

@@ -4,6 +4,19 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Semana do Trânsito — Prefeitura de Itapetininga</title>
+<!-- COMPARTILHAMENTO: ajuste estas URLs quando publicar no domínio definitivo -->
+<meta name="description" content="Jogue o game da Semana do Trânsito da Prefeitura de Itapetininga. Trânsito seguro é responsabilidade de todos.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Semana do Trânsito | Prefeitura de Itapetininga">
+<meta property="og:description" content="Trânsito seguro é responsabilidade de todos. Jogue, aprenda e compartilhe.">
+<meta property="og:url" content="https://www.itapetininga.sp.gov.br/semana-do-transito/">
+<meta property="og:image" content="https://www.itapetininga.sp.gov.br/semana-do-transito/semana-transito-compartilhamento.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Semana do Trânsito | Prefeitura de Itapetininga">
+<meta name="twitter:description" content="Trânsito seguro é responsabilidade de todos. Jogue, aprenda e compartilhe.">
+<meta name="twitter:image" content="https://www.itapetininga.sp.gov.br/semana-do-transito/semana-transito-compartilhamento.png">
 <style>
 :root{
   --ink:#101820;
@@ -53,6 +66,17 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated;image-rend
 .pixel-btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #071319}
 .pixel-btn.secondary{background:#d8dcde}
 .top-actions{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:13px}
+.share-quiet{appearance:none;border:1px solid rgba(255,255,255,.42);background:rgba(255,255,255,.06);color:#fff;padding:8px 11px;font:900 10px "Courier New",monospace;text-transform:uppercase;cursor:pointer;min-height:36px;letter-spacing:.03em}
+.share-quiet:active{background:rgba(244,197,66,.2)}
+.final-share{display:none;margin:16px auto 0;padding:14px;background:#0b151b;border:2px solid var(--accent);max-width:440px;text-align:left}
+.final-share.show{display:block}
+.final-share strong{display:block;color:#fff;font-size:15px;line-height:1.25;margin-bottom:5px}
+.final-share p{margin:0 0 11px!important;font-size:12px!important;color:#dbe1e4;line-height:1.35!important}
+.final-share-main{width:100%;font-size:13px}
+.share-links{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+.share-link-btn{appearance:none;border:1px solid rgba(255,255,255,.48);background:#15232b;color:#fff;padding:8px 10px;font:900 9px "Courier New",monospace;cursor:pointer;min-height:35px}
+.share-link-btn:active{background:#253640}
+.share-status{min-height:17px;margin-top:8px;color:var(--accent);font-size:10px;font-weight:900;text-align:center}
 
 /* Intro animada */
 .intro-art{display:none;margin:18px auto 16px;width:78%;height:92px;position:relative;overflow:hidden;border-top:3px solid rgba(255,255,255,.7);border-bottom:3px solid rgba(255,255,255,.7);background:#343a40}
@@ -142,6 +166,19 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
             <button id="startBtn" class="pixel-btn" type="button">Jogar</button>
             <button id="fullscreenBtn" class="pixel-btn secondary" type="button">Tela cheia</button>
           </div>
+          <button id="introShareBtn" class="share-quiet" type="button">↗ Compartilhar o game</button>
+          <div id="finalShare" class="final-share" aria-live="polite">
+            <strong>COMPARTILHE O DESAFIO</strong>
+            <p>Você concluiu o game. Convide seus amigos a testar também os conhecimentos no trânsito.</p>
+            <button id="finalShareBtn" class="pixel-btn final-share-main" type="button">↗ COMPARTILHAR O GAME</button>
+            <div class="share-links">
+              <button id="waShareBtn" class="share-link-btn" type="button">WHATSAPP</button>
+              <button id="fbShareBtn" class="share-link-btn" type="button">FACEBOOK</button>
+              <button id="xShareBtn" class="share-link-btn" type="button">X</button>
+              <button id="copyShareBtn" class="share-link-btn" type="button">COPIAR LINK</button>
+            </div>
+            <div id="shareStatus" class="share-status" role="status"></div>
+          </div>
         </div>
       </div>
 
@@ -185,13 +222,29 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
   const fullscreenBtn = document.getElementById('fullscreenBtn');
   const soundBtn = document.getElementById('soundBtn');
   const gameMuteBtn = document.getElementById('gameMuteBtn');
+  const introShareBtn = document.getElementById('introShareBtn');
+  const finalShare = document.getElementById('finalShare');
+  const finalShareBtn = document.getElementById('finalShareBtn');
+  const waShareBtn = document.getElementById('waShareBtn');
+  const fbShareBtn = document.getElementById('fbShareBtn');
+  const xShareBtn = document.getElementById('xShareBtn');
+  const copyShareBtn = document.getElementById('copyShareBtn');
+  const shareStatus = document.getElementById('shareStatus');
+
+  // COMPARTILHAMENTO: troque SHARE_URL pela URL definitiva quando publicar.
+  const SHARE_URL='https://www.itapetininga.sp.gov.br/semana-do-transito/';
+  const SHARE_TITLE='Semana do Trânsito | Prefeitura de Itapetininga';
+  const SHARE_TEXT='Trânsito seguro é responsabilidade de todos. Jogue o game da Semana do Trânsito da Prefeitura de Itapetininga.';
 
   const CANVAS_W=1080,CANVAS_H=1920;
   const W=656;
   const DRAW_SCALE=CANVAS_W/W;
   const H=CANVAS_H/DRAW_SCALE;
-  const ROAD_L=174,ROAD_R=482,CENTER_X=328;
+  const ROAD_L=174,ROAD_R=482,FINAL_ROAD_R=566,CENTER_X=328;
   const PLAYER_LANE_X=404,OPPOSITE_LANE_X=252;
+  const FINAL_PARKING_SPACES=[[3780,3870],[3900,3990],[4140,4230]];
+  const FINAL_YELLOW_ZONES=[[3650,3750],[4010,4110]];
+  const FINAL_GARAGES=[{world:3700,label:'CASA 1'},{world:4060,label:'CASA 2'}];
   const CAR_Y=790;
   const MOVE_SCALE=7.2; // cenário mais veloz para transmitir melhor 20–40 km/h no formato vertical
   const keys={up:false,down:false,left:false,right:false};
@@ -223,8 +276,8 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     },
     {
       title:'FASE 05',name:'DESAFIO FINAL',limit:40,target:4520,
-      mission:'Aplique tudo o que aprendeu: mantenha-se até 40 km/h, reduza na lombada, respeite a área escolar e a travessia das crianças, aguarde o sinal verde, dê preferência ao pedestre e estacione somente na vaga BRANCA — nunca na guia amarela ou em frente a garagens.',
-      ribbon:'DESAFIO FINAL • 40 km/h • TODAS AS REGRAS',
+      mission:'Aplique tudo o que aprendeu: mantenha-se até 40 km/h, reduza para 20 km/h na lombada, respeite a área escolar e a travessia das crianças, pare antes da linha no sinal vermelho, dê preferência ao pedestre e estacione em uma das vagas BRANCAS — nunca na guia amarela ou em frente a garagens.',
+      ribbon:'DESAFIO FINAL • 40 km/h • LOMBADA 20 km/h • TODAS AS REGRAS',
       success:'Você aplicou todas as regras no mesmo trajeto. No trânsito, cada escolha segura conta.'
     }
   ];
@@ -305,9 +358,49 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     Object.keys(keys).forEach(k=>keys[k]=false);
   }
 
+  function setShareStatus(msg){
+    if(!shareStatus)return;
+    shareStatus.textContent=msg||'';
+    if(msg)setTimeout(()=>{if(shareStatus.textContent===msg)shareStatus.textContent='';},2200);
+  }
+
+  async function shareGame(){
+    audio.init();
+    const data={title:SHARE_TITLE,text:SHARE_TEXT,url:SHARE_URL};
+    if(navigator.share){
+      try{await navigator.share(data);setShareStatus('COMPARTILHAMENTO ABERTO');return;}catch(err){if(err&&err.name==='AbortError')return;}
+    }
+    setShareStatus('ESCOLHA UMA REDE ABAIXO OU COPIE O LINK');
+    if(finalShare&&!finalShare.classList.contains('show')){
+      // Na abertura, o fallback mais útil é copiar o endereço diretamente.
+      try{await navigator.clipboard.writeText(SHARE_URL);setShareStatus('LINK COPIADO');}catch(_e){}
+    }
+  }
+
+  async function copyShareLink(){
+    try{await navigator.clipboard.writeText(SHARE_URL);setShareStatus('LINK COPIADO');}
+    catch(_e){
+      const ta=document.createElement('textarea');ta.value=SHARE_URL;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();
+      try{document.execCommand('copy');setShareStatus('LINK COPIADO');}catch(_err){setShareStatus(SHARE_URL);}
+      ta.remove();
+    }
+  }
+
+  function openShareNetwork(network){
+    const u=encodeURIComponent(SHARE_URL),t=encodeURIComponent(SHARE_TEXT);
+    let target='';
+    if(network==='wa')target='https://wa.me/?text='+encodeURIComponent(SHARE_TEXT+' '+SHARE_URL);
+    if(network==='fb')target='https://www.facebook.com/sharer/sharer.php?u='+u;
+    if(network==='x')target='https://twitter.com/intent/tweet?text='+t+'&url='+u;
+    if(target)window.open(target,'_blank','noopener,noreferrer');
+  }
+
   function showIntro(){
     state.intro=true;state.running=false;state.paused=false;state.transition=false;state.result=null;
     overlay.classList.add('intro-mode');
+    finalShare.classList.remove('show');
+    introShareBtn.style.display='inline-block';
+    setShareStatus('');
     overlayEyebrow.textContent='18 A 25 DE SETEMBRO';
     overlayTitle.textContent='SEMANA DO TRÂNSITO';
     overlayText.textContent='UMA CAMPANHA DA PREFEITURA DE ITAPETININGA';
@@ -323,6 +416,9 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     state.intro=false;
     const l=levels[state.level];
     overlay.classList.remove('intro-mode');
+    finalShare.classList.remove('show');
+    introShareBtn.style.display='none';
+    setShareStatus('');
     overlayEyebrow.textContent='MISSÃO • '+l.title;
     overlayTitle.textContent=l.name;
     overlayText.textContent='Passe de fase cumprindo a regra de trânsito.';
@@ -350,6 +446,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     if(state.transition)return;
     overlay.classList.remove('intro-mode');
     state.transition=true;state.result='fail';state.running=false;audio.updateEngine(false,0);audio.fail();
+    finalShare.classList.remove('show');introShareBtn.style.display='none';setShareStatus('');
     overlayEyebrow.textContent='MISSÃO INTERROMPIDA';
     overlayTitle.textContent='TENTE DE NOVO';
     overlayText.textContent=reason;
@@ -370,8 +467,11 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     overlayText.textContent=levels[state.level].success;
     missionText.textContent=state.level===levels.length-1?'No trânsito real, o objetivo não é chegar primeiro. É todos chegarem bem.':'Prepare-se: a próxima fase traz uma nova situação de trânsito.';
     missionLimit.style.display='none';
-    overlayTip.textContent=state.level===levels.length-1?'SEMANA DO TRÂNSITO • DESACELERE. SEU BEM MAIOR É A VIDA.':'Pressione ENTER ou toque no botão para continuar.';
+    overlayTip.textContent=state.level===levels.length-1?'SEMANA DO TRÂNSITO • TRÂNSITO SEGURO É RESPONSABILIDADE DE TODOS.':'Pressione ENTER ou toque no botão para continuar.';
     startBtn.textContent=state.level===levels.length-1?'JOGAR NOVAMENTE':'PRÓXIMA FASE';
+    introShareBtn.style.display='none';
+    finalShare.classList.toggle('show',state.level===levels.length-1);
+    setShareStatus('');
     overlay.classList.remove('hidden');
   }
 
@@ -403,6 +503,14 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
       gameMuteBtn.setAttribute('aria-pressed',muted?'true':'false');
       gameMuteBtn.setAttribute('aria-label',muted?'Ligar som':'Desligar som');
     }
+  }
+
+  function currentRoadRight(){
+    return ROAD_R;
+  }
+
+  function parkingZoneActive(){
+    return state.level===4&&state.phase5Step==='parkingApproach';
   }
 
   function effectiveLimit(){
@@ -445,7 +553,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     const steer=92*(.35+Math.min(car.speed,40)/40);
     if(keys.left)car.x-=steer*dt;if(keys.right)car.x+=steer*dt;
     const minX=ROAD_L+24;
-    const maxX=state.level===4?588:ROAD_R-24;
+    const maxX=ROAD_R-24;
     car.x=Math.max(minX,Math.min(maxX,car.x));
 
     // Regra geral de circulação: as duas linhas amarelas contínuas separam as mãos.
@@ -526,8 +634,13 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
   }
 
   function updateCrossing(dt){
-    const stopY=1400;
-    const triggerDistance=stopY-(stopY*.20); // entra nos 20% finais de aproximação
+    const intersectionY=1400;
+    // A linha branca desenhada no cruzamento fica em intersectionY + 66.
+    // Como o carro permanece fixo na tela, estes valores fazem o para-choque
+    // parar VISUALMENTE antes da linha e tratam qualquer invasão no vermelho como falha.
+    const stopY=intersectionY-102;
+    const redLineLimit=intersectionY-88;
+    const triggerDistance=stopY-(stopY*.20); // entra nos 20% finais da aproximação
     const greenDelay=7;
 
     // O ciclo do semáforo começa quando o jogador entra na zona de aproximação,
@@ -550,12 +663,13 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     }
 
     // Enquanto o sinal continua vermelho, a linha de retenção é obrigatória.
-    if(!state.lightGreen&&state.phase==='drive'&&state.distance>=stopY-25){
-      if(state.distance>stopY+8){
-        fail('Você avançou o sinal vermelho. Pare antes da linha de retenção.');return;
+    if(!state.lightGreen&&state.phase==='drive'&&state.distance>=stopY-30){
+      if(state.distance>=redLineLimit){
+        state.distance=stopY;state.car.speed=0;
+        fail('Você avançou a linha de retenção com o sinal vermelho. Pare totalmente ANTES da faixa e aguarde o verde.');return;
       }
       if(state.car.speed<1.4){
-        state.distance=stopY-4;
+        state.distance=stopY;
         state.car.speed=0;
         state.phase='hold';
         state.stoppedCorrectly=true;
@@ -573,7 +687,9 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
 
   function updatePhase4(dt){
     const intersectionY=1040;
-    const intersectionTrigger=intersectionY-(intersectionY*.20);
+    const intersectionStopY=intersectionY-102;
+    const intersectionRedLineLimit=intersectionY-88;
+    const intersectionTrigger=intersectionStopY-(intersectionStopY*.20);
     const intersectionExit=1310;
     const greenDelay=7;
     const pedestrianStopY=2020;
@@ -596,12 +712,13 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
         }
       }
 
-      if(!state.lightGreen&&state.phase==='drive'&&state.distance>=intersectionY-25){
-        if(state.distance>intersectionY+8){
-          fail('Você avançou o sinal vermelho. Pare antes da linha e aguarde o verde.');return;
+      if(!state.lightGreen&&state.phase==='drive'&&state.distance>=intersectionStopY-30){
+        if(state.distance>=intersectionRedLineLimit){
+          state.distance=intersectionStopY;state.car.speed=0;
+          fail('Você avançou a linha de retenção com o sinal vermelho. Pare totalmente ANTES da faixa e aguarde o verde.');return;
         }
         if(state.car.speed<1.4){
-          state.distance=intersectionY-4;
+          state.distance=intersectionStopY;
           state.car.speed=0;
           state.phase='hold';
           state.stoppedCorrectly=true;
@@ -668,20 +785,22 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
   }
 
   function updateFinalChallenge(dt){
-    const bumpY=600;
+    const bumpY=650;
     const schoolStopY=1380;
     const intersectionY=2260;
-    const intersectionTrigger=intersectionY-(intersectionY*.20);
+    const intersectionStopY=intersectionY-102;
+    const intersectionRedLineLimit=intersectionY-88;
+    const intersectionTrigger=intersectionStopY-(intersectionStopY*.20);
     const intersectionExit=2530;
     const pedStopY=3200;
-    const parkY=4070;
+    const parkingEnd=4320;
     const greenDelay=7;
 
-    // 1/5 — Lombada: mantém a regra geral da Fase 1 (máximo 40 km/h).
+    // 1/5 — Lombada: via até 40 km/h, com redução obrigatória para 20 km/h no obstáculo.
     if(state.phase5Step==='bump'){
-      if(state.distance>=360&&!state.pedestrianAlert){state.pedestrianAlert=true;showToast('1/5 • LOMBADA À FRENTE • REDUZA',1.3);}
+      if(state.distance>=260&&!state.pedestrianAlert){state.pedestrianAlert=true;showToast('1/5 • LOMBADA À FRENTE • REDUZA PARA 20 km/h',1.5);}
       if(state.distance>=bumpY-5){
-        if(state.car.speed>40.3){fail('Você passou pela lombada acima de 40 km/h. Reduza antes do obstáculo.');return;}
+        if(state.car.speed>20.3){fail('Você passou pela lombada acima de 20 km/h. Reduza antes do obstáculo e observe o painel eletrônico.');return;}
         state.phase5BumpDone=true;state.phase5Step='schoolApproach';state.pedestrianAlert=false;
         if(!state.phase5BumpSound){audio.bump();state.phase5BumpSound=true;}
         showToast('1/5 • LOMBADA SUPERADA • ÁREA ESCOLAR À FRENTE',1.5);
@@ -723,9 +842,9 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
         state.signalTimer+=dt;
         if(state.signalTimer>=greenDelay){state.signalTimer=greenDelay;state.lightGreen=true;showToast('3/5 • SINAL VERDE • PODE SEGUIR',1.4);if(state.phase==='hold')state.phase='released';}
       }
-      if(!state.lightGreen&&state.phase==='drive'&&state.distance>=intersectionY-25){
-        if(state.distance>intersectionY+8){fail('Você avançou o sinal vermelho. Pare antes da linha e aguarde o verde.');return;}
-        if(state.car.speed<1.4){state.distance=intersectionY-4;state.car.speed=0;state.phase='hold';showToast('3/5 • PAROU NO VERMELHO • AGUARDE',1.2);}
+      if(!state.lightGreen&&state.phase==='drive'&&state.distance>=intersectionStopY-30){
+        if(state.distance>=intersectionRedLineLimit){state.distance=intersectionStopY;state.car.speed=0;fail('Você avançou a linha de retenção com o sinal vermelho. Pare totalmente ANTES da faixa e aguarde o verde.');return;}
+        if(state.car.speed<1.4){state.distance=intersectionStopY;state.car.speed=0;state.phase='hold';showToast('3/5 • PAROU ANTES DA LINHA • AGUARDE',1.2);}
       }
       if(state.phase==='hold'&&state.lightGreen)state.phase='released';
       if(state.phase==='released')state.phase='drive';
@@ -755,31 +874,33 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
       return;
     }
 
-    // 5/5 — Estacionamento no acostamento da rua.
+    // 5/5 — Estacionamento na própria rua, junto ao meio-fio.
+    // Não existe canteiro/faixa paralela separada: as vagas fazem parte do asfalto da via.
     if(state.phase5Step==='parkingApproach'){
-      if(state.distance>=3560&&!state.pedestrianAlert){state.pedestrianAlert=true;showToast('5/5 • ESTACIONE SOMENTE NA ÁREA BRANCA',1.5);}
+      if(state.distance>=3500&&!state.pedestrianAlert){state.pedestrianAlert=true;showToast('5/5 • VAGAS À FRENTE • BRANCO PODE • AMARELO NÃO',1.6);}
 
-      const inWhiteLong=Math.abs(state.distance-parkY)<108;
-      const inWhiteLat=state.car.x>505&&state.car.x<552;
+      const carHalfLength=22;
+      const inWhiteLong=FINAL_PARKING_SPACES.some(([a,b])=>state.distance>a+carHalfLength&&state.distance<b-carHalfLength);
+      const inWhiteLat=state.car.x>430&&state.car.x<450;
       const inWhite=inWhiteLong&&inWhiteLat;
-      const inShoulder=state.car.x>492;
-      const yellowZone=(state.distance>3600&&state.distance<3810)||(state.distance>4290&&state.distance<4500);
+      const atCurb=state.car.x>422;
+      const yellowZone=FINAL_YELLOW_ZONES.some(([a,b])=>state.distance>a-carHalfLength&&state.distance<b+carHalfLength);
 
-      if(state.car.speed<1.4&&inShoulder){
+      if(state.car.speed<1.4&&atCurb){
         if(yellowZone){
           state.phase5ParkingWarn+=dt;
-          if(state.phase5ParkingWarn>.65){fail('Você parou em área amarela / em frente a uma garagem. Procure a vaga demarcada em branco.');return;}
+          if(state.phase5ParkingWarn>.55){fail('Você parou na faixa amarela em frente a uma garagem. Esse trecho deve permanecer livre. Estacione em uma das vagas brancas.');return;}
         }else if(inWhite){
           state.parkHold+=dt;state.phase5ParkingWarn=0;
           if(state.parkHold>.9){complete();return;}
         }else{
           state.phase5ParkingWarn+=dt;
-          if(state.phase5ParkingWarn>1.2){fail('A parada não está dentro da vaga branca. Posicione o veículo completamente dentro da demarcação.');return;}
+          if(state.phase5ParkingWarn>1.1){fail('O veículo não está completamente dentro de uma vaga branca. Reposicione junto ao meio-fio, dentro da demarcação.');return;}
         }
       }else{
         state.parkHold=Math.max(0,state.parkHold-dt*.9);state.phase5ParkingWarn=Math.max(0,state.phase5ParkingWarn-dt*1.4);
       }
-      if(state.distance>4510&&!inWhite){fail('Você passou pela área de estacionamento. A vaga válida era a demarcada em branco.');return;}
+      if(state.distance>parkingEnd&&!inWhite){fail('Você passou pelas vagas disponíveis. Estacione em uma das áreas demarcadas em branco.');return;}
     }
   }
 
@@ -797,27 +918,21 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
   function drawWorld(){
     ctx.fillStyle='#74797d';ctx.fillRect(0,0,W,H);
     drawScrollingGrass();
-    ctx.fillStyle='#c6bda5';ctx.fillRect(ROAD_L-34,0,34,H);
-    if(state.level===4){
-      // Na fase final existe um acostamento asfaltado real à direita da via.
-      ctx.fillStyle='#343a40';ctx.fillRect(ROAD_R,0,84,H);
-      ctx.fillStyle='#c6bda5';ctx.fillRect(566,0,34,H);
-      ctx.fillStyle='#aaa18a';for(let y=((state.distance*.8)%24)-24;y<H;y+=24){ctx.fillRect(ROAD_L-34,y,34,2);ctx.fillRect(566,y,34,2);}
-    }else{
-      ctx.fillStyle='#c6bda5';ctx.fillRect(ROAD_R,0,34,H);
-      ctx.fillStyle='#aaa18a';for(let y=((state.distance*.8)%24)-24;y<H;y+=24){ctx.fillRect(ROAD_L-34,y,34,2);ctx.fillRect(ROAD_R,y,34,2);}
-    }
-    ctx.fillStyle='#343a40';ctx.fillRect(ROAD_L,0,ROAD_R-ROAD_L,H);
-    ctx.fillStyle='#282e33';ctx.fillRect(ROAD_L+7,0,3,H);ctx.fillRect(ROAD_R-10,0,3,H);
-    // bordas brancas
-    ctx.fillStyle='#ece9dd';ctx.fillRect(ROAD_L+12,0,3,H);ctx.fillRect(ROAD_R-15,0,3,H);
-    if(state.level===4){ctx.fillStyle='#d7d0b9';ctx.fillRect(564,0,3,H);}
+    const roadRight=currentRoadRight();
+    ctx.fillStyle='#c6bda5';ctx.fillRect(ROAD_L-34,0,34,H);ctx.fillRect(roadRight,0,34,H);
+    ctx.fillStyle='#aaa18a';for(let y=((state.distance*.8)%24)-24;y<H;y+=24){ctx.fillRect(ROAD_L-34,y,34,2);ctx.fillRect(roadRight,y,34,2);}
+    // Na fase 5 a faixa junto ao meio-fio faz parte da PRÓPRIA RUA. Não há canteiro.
+    ctx.fillStyle='#343a40';ctx.fillRect(ROAD_L,0,roadRight-ROAD_L,H);
+    ctx.fillStyle='#282e33';ctx.fillRect(ROAD_L+7,0,3,H);ctx.fillRect(roadRight-4,0,4,H);
+    // borda branca esquerda; nas fases 1–4 há também borda direita. Na fase 5,
+    // o asfalto segue até o meio-fio para permitir estacionamento na própria via.
+    ctx.fillStyle='#ece9dd';ctx.fillRect(ROAD_L+12,0,3,H);if(state.level!==4)ctx.fillRect(ROAD_R-15,0,3,H);
     // Duas linhas amarelas contínuas separam as mãos da via.
     // Elas são fixas porque são marcação da pista, não um elemento de velocidade.
     ctx.fillStyle='#e5cf61';
     ctx.fillRect(CENTER_X-7,0,4,H);
     ctx.fillRect(CENTER_X+3,0,4,H);
-    drawRoadTexture();drawSpeedLines();drawScenery();
+    drawRoadTexture(roadRight);drawSpeedLines(roadRight);drawScenery(roadRight);
   }
 
   function drawScrollingGrass(){
@@ -825,18 +940,20 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     for(let y=-32+o;y<H+32;y+=32)for(let x=0;x<W;x+=32)if(((x/32+Math.floor((y-o)/32))&1)===0)ctx.fillRect(x,y,16,16);
   }
 
-  function drawRoadTexture(){
+  function drawRoadTexture(roadRight){
     ctx.fillStyle='rgba(255,255,255,.045)';
-    const o=(state.distance*1.8)%66;for(let y=-66+o;y<H+66;y+=66){ctx.fillRect(214,y,3,11);ctx.fillRect(446,y+22,2,9);ctx.fillRect(371,y+39,2,8);}
+    const o=(state.distance*1.8)%66;
+    const rightTex=Math.max(roadRight-36,446);
+    for(let y=-66+o;y<H+66;y+=66){ctx.fillRect(214,y,3,11);ctx.fillRect(rightTex,y+22,2,9);ctx.fillRect(371,y+39,2,8);}
   }
 
-  function drawSpeedLines(){
+  function drawSpeedLines(roadRight){
     if(state.car.speed<22)return;
     const strength=Math.min(1,(state.car.speed-20)/25);ctx.fillStyle='rgba(255,255,255,'+(0.18*strength)+')';
-    const off=(state.distance*2.4)%70;for(let y=-70+off;y<H;y+=70){ctx.fillRect(150,y,3,18+30*strength);ctx.fillRect(505,y+28,3,18+30*strength);}
+    const off=(state.distance*2.4)%70;const rx=roadRight-17;for(let y=-70+off;y<H;y+=70){ctx.fillRect(150,y,3,18+30*strength);ctx.fillRect(rx,y+28,3,18+30*strength);}
   }
 
-  function drawScenery(){
+  function drawScenery(roadRight){
     const spacing=180;
     const minWorld=state.distance-(H-CAR_Y)-220;
     const maxWorld=state.distance+CAR_Y+260;
@@ -937,12 +1054,18 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
   }
 
   function drawLevel5(){
-    // 1/5 — limite e lombada
-    drawBigSpeedSign(535,sy(290),'40');drawRoadNumber(sy(410),'40');drawSpeedBump(sy(600));
+    const roadRight=currentRoadRight();
+    const signX=roadRight+53;
+    const boardX=roadRight+40;
+
+    // 1/5 — limite geral 40, aviso de 20 e lombada eletrônica com leitura em tempo real.
+    drawBigSpeedSign(signX,sy(180),'40');
+    drawBigSpeedSign(signX,sy(360),'20');drawRoadNumber(sy(470),'20');
+    drawElectronicSpeedBoard(boardX,sy(535),state.car.speed);drawSpeedBump(sy(650),roadRight);
 
     // 2/5 — área escolar + crianças
     const schoolStop=sy(1380);const schoolY=sy(1170);if(schoolY>-150&&schoolY<H+100)drawSchool(25,schoolY-80);
-    drawBigSpeedSign(535,sy(1000),'20');drawStopLineAndCrosswalk(schoolStop);
+    drawBigSpeedSign(signX,sy(1000),'20');drawStopLineAndCrosswalk(schoolStop,ROAD_R);
     if(schoolStop>-110&&schoolStop<H+110){
       const left=ROAD_L-18,right=ROAD_R+18,ys=[schoolStop-73,schoolStop-60,schoolStop-86],shirts=['#f3cd55','#e7785f','#6fa4d4'];
       for(let i=0;i<3;i++){
@@ -955,12 +1078,12 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     }
 
     // 3/5 — cruzamento
-    const crossY=sy(2260);drawIntersection(crossY);drawTrafficLight(510,crossY+22,state.lightGreen);
+    const crossY=sy(2260);drawIntersection(crossY,ROAD_R);drawTrafficLight(510,crossY+22,state.lightGreen);
     if(state.phase5Step==='intersectionApproach'&&state.signalTimerStarted&&!state.lightGreen)drawSignalCountdown();
     if(state.phase5Step==='intersectionApproach'&&!state.lightGreen&&state.signalTimerStarted){const q=(state.levelTime*110)%760-90;drawNpcCar(q,crossY-43,'#c95b5b',true);drawNpcCar(W-q,crossY+42,'#5f8cc9',true);}
 
     // 4/5 — pedestre
-    const pedStop=sy(3200);drawStopLineAndCrosswalk(pedStop);
+    const pedStop=sy(3200);drawStopLineAndCrosswalk(pedStop,ROAD_R);
     if(pedStop>-110&&pedStop<H+110){
       const left=ROAD_L-18,right=ROAD_R+18,py=pedStop-72;let x=left,walking=false;
       if(state.phase5PedDone)x=right+15;
@@ -973,11 +1096,24 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     drawFinalParkingStreet();
   }
 
-  function drawSpeedBump(y){
+  function drawSpeedBump(y,roadRight=ROAD_R){
     if(y<-100||y>H+100)return;
-    ctx.fillStyle='#e1c84e';ctx.fillRect(ROAD_L+12,y-10,ROAD_R-ROAD_L-24,20);
-    ctx.fillStyle='#20262b';for(let x=ROAD_L+18;x<ROAD_R-20;x+=28)ctx.fillRect(x,y-10,14,20);
+    ctx.fillStyle='#e1c84e';ctx.fillRect(ROAD_L+12,y-10,roadRight-ROAD_L-24,20);
+    ctx.fillStyle='#20262b';for(let x=ROAD_L+18;x<roadRight-20;x+=28)ctx.fillRect(x,y-10,14,20);
     pixelBox('LOMBADA',30,y-17,112,32);
+  }
+
+  function drawElectronicSpeedBoard(x,y,speed){
+    if(y<-125||y>H+125)return;
+    const value=Math.max(0,Math.round(speed));
+    const ok=value<=20;
+    ctx.fillStyle='#666e73';ctx.fillRect(x-3,y+42,6,74);
+    ctx.fillStyle='#151b1f';ctx.fillRect(x-47,y-42,94,86);
+    ctx.strokeStyle='#f4c542';ctx.lineWidth=4;ctx.strokeRect(x-47,y-42,94,86);
+    pixelText('LOMBADA',x,y-27,11,'#fff','center');
+    pixelText('20 km/h',x,y-10,12,'#f4c542','center');
+    pixelText(String(value),x,y+15,27,ok?'#f4c542':'#ef5350','center');
+    pixelText('km/h',x,y+34,9,'#fff','center');
   }
 
   function worldSegment(a,b){
@@ -985,60 +1121,71 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
   }
 
   function drawFinalParkingStreet(){
-    // Garagens: o trecho da guia correspondente fica amarelo e é proibido estacionar.
-    drawGarageFront(3620,'CASA 1');drawGarageFront(4320,'CASA 2');
-    drawYellowCurb(3600,3810);drawYellowCurb(4290,4500);
+    // Casas/garagens ficam depois da calçada. A faixa amarela é pintada no meio-fio,
+    // enquanto as vagas brancas são demarcadas diretamente no asfalto da rua.
+    FINAL_GARAGES.forEach(g=>drawGarageFront(g.world,g.label));
+    FINAL_YELLOW_ZONES.forEach(([a,b])=>drawYellowCurb(a,b));
+    FINAL_PARKING_SPACES.forEach((segm,i)=>drawParkingBay(segm[0],segm[1],i+1));
+    if(state.distance>3440&&state.distance<4300)pixelBox('VAGA BRANCA = PODE\nAMARELO/GARAGEM = NÃO',20,285,166,48);
+  }
 
-    // Vaga permitida: somente contorno branco sobre o acostamento, sem área verde artificial.
-    const seg=worldSegment(3962,4178);if(seg.bottom>-40&&seg.top<H+50){
-      const top=Math.max(-30,seg.top),bottom=Math.min(H+30,seg.bottom);
-      ctx.strokeStyle='#f7f6ee';ctx.lineWidth=4;ctx.strokeRect(493,top,66,bottom-top);
-      ctx.fillStyle='rgba(255,255,255,.06)';ctx.fillRect(497,top+4,58,Math.max(0,bottom-top-8));
-      if(bottom-top>55)pixelText('VAGA',526,(top+bottom)/2,13,'#fff','center');
-    }
-    if(state.distance>3520&&state.distance<4420)pixelBox('BRANCO = PODE\nAMARELO = NÃO',24,285,145,48);
+  function drawParkingBay(a,b,index){
+    const seg=worldSegment(a,b);if(seg.bottom<-30||seg.top>H+30)return;
+    const top=Math.max(-20,seg.top),bottom=Math.min(H+20,seg.bottom);
+    ctx.strokeStyle='#f7f6ee';ctx.lineWidth=4;ctx.strokeRect(420,top,46,bottom-top);
+    ctx.fillStyle='rgba(255,255,255,.045)';ctx.fillRect(424,top+4,38,Math.max(0,bottom-top-8));
+    if(bottom-top>46)pixelText('VAGA '+index,443,(top+bottom)/2,10,'#fff','center');
   }
 
   function drawYellowCurb(a,b){
     const seg=worldSegment(a,b);if(seg.bottom<-20||seg.top>H+20)return;
-    ctx.fillStyle='#f1c641';ctx.fillRect(560,Math.max(-10,seg.top),7,Math.min(H+10,seg.bottom)-Math.max(-10,seg.top));
+    ctx.fillStyle='#f1c641';ctx.fillRect(ROAD_R-7,Math.max(-10,seg.top),7,Math.min(H+10,seg.bottom)-Math.max(-10,seg.top));
   }
 
   function drawGarageFront(worldY,label){
     const y=sy(worldY);if(y<-150||y>H+120)return;
     const top=y-55;
     // entrada/guia rebaixada
-    ctx.fillStyle='#9a9484';ctx.fillRect(566,top+36,39,56);
-    // casa vista de cima/lateral na borda da tela
+    ctx.fillStyle='#9a9484';ctx.fillRect(ROAD_R,top+36,39,56);
+    // casa vista de cima/lateral depois da calçada
     ctx.fillStyle='#a9654d';ctx.fillRect(605,top,51,112);ctx.fillStyle='#d59b70';ctx.fillRect(610,top+7,46,98);
     ctx.fillStyle='#59636a';ctx.fillRect(608,top+35,48,49);ctx.fillStyle='#2f353a';
     for(let yy=top+39;yy<top+82;yy+=10)ctx.fillRect(611,yy,43,3);
     pixelText('GARAGEM',632,top+94,8,'#fff','center');
   }
 
+  function drawNoParkingSign(x,y){
+    if(y<-100||y>H+120)return;
+    ctx.fillStyle='#777';ctx.fillRect(x-2,y+18,4,32);
+    ctx.fillStyle='#fff';ctx.fillRect(x-16,y-16,32,32);
+    ctx.fillStyle='#d9534f';ctx.fillRect(x-13,y-13,26,26);
+    ctx.fillStyle='#fff';ctx.fillRect(x-8,y-2,16,4);
+    ctx.save();ctx.translate(x,y);ctx.rotate(-0.75);ctx.fillStyle='#fff';ctx.fillRect(-2,-12,4,24);ctx.restore();
+  }
+
   function drawOncomingCars(){
     const positions=[680,1440,1960];positions.forEach((p,i)=>{const y=sy(p-((state.levelTime*(18+i*5))%120));if(y>-60&&y<H+80)drawNpcCar(OPPOSITE_LANE_X,y,i%2?'#b95f59':'#638cc4',false);});
   }
 
-  function drawStopLineAndCrosswalk(stopY){
+  function drawStopLineAndCrosswalk(stopY,roadRight=ROAD_R){
     if(stopY<-110||stopY>H+110)return;
     // O veículo vem de baixo para cima. A linha de retenção fica ANTES da
     // zebra e sempre alguns pixels à frente do para-choque do carro parado.
     ctx.fillStyle='#f6f4e9';
-    ctx.fillRect(ROAD_L+12,stopY-35,ROAD_R-ROAD_L-24,7);
-    for(let yy=stopY-92;yy<=stopY-50;yy+=13)ctx.fillRect(ROAD_L+16,yy,ROAD_R-ROAD_L-32,7);
+    ctx.fillRect(ROAD_L+12,stopY-35,roadRight-ROAD_L-24,7);
+    for(let yy=stopY-92;yy<=stopY-50;yy+=13)ctx.fillRect(ROAD_L+16,yy,roadRight-ROAD_L-32,7);
     pixelText('PARE',PLAYER_LANE_X,stopY+28,17,'#fff','center');
   }
 
-  function drawIntersection(y){
+  function drawIntersection(y,roadRight=ROAD_R){
     if(y<-120||y>H+120)return;
     ctx.fillStyle='#343a40';ctx.fillRect(0,y-55,W,110);
     // A rua transversal também usa linha dupla amarela contínua. Como na via real,
     // a marcação termina antes da área interna do cruzamento e recomeça depois dela.
     ctx.fillStyle='#e5cf61';
     ctx.fillRect(0,y-7,ROAD_L,4);ctx.fillRect(0,y+3,ROAD_L,4);
-    ctx.fillRect(ROAD_R,y-7,W-ROAD_R,4);ctx.fillRect(ROAD_R,y+3,W-ROAD_R,4);
-    ctx.fillStyle='#f6f4e9';ctx.fillRect(ROAD_L+12,y+66,ROAD_R-ROAD_L-24,7);pixelText('PARE',PLAYER_LANE_X,y+91,17,'#fff','center');
+    ctx.fillRect(roadRight,y-7,W-roadRight,4);ctx.fillRect(roadRight,y+3,W-roadRight,4);
+    ctx.fillStyle='#f6f4e9';ctx.fillRect(ROAD_L+12,y+66,roadRight-ROAD_L-24,9);pixelText('PARE',PLAYER_LANE_X,y+91,17,'#fff','center');
   }
 
   function drawSignalCountdown(){
@@ -1117,6 +1264,12 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
   document.querySelectorAll('[data-tap]').forEach(btn=>btn.addEventListener('click',()=>{if(btn.dataset.tap==='pause')togglePause();if(btn.dataset.tap==='restart'){resetState();showMission();}}));
 
   startBtn.addEventListener('click',advanceOverlay);
+  introShareBtn.addEventListener('click',shareGame);
+  finalShareBtn.addEventListener('click',shareGame);
+  waShareBtn.addEventListener('click',()=>openShareNetwork('wa'));
+  fbShareBtn.addEventListener('click',()=>openShareNetwork('fb'));
+  xShareBtn.addEventListener('click',()=>openShareNetwork('x'));
+  copyShareBtn.addEventListener('click',copyShareLink);
   soundBtn.addEventListener('click',()=>audio.toggle());
   gameMuteBtn.addEventListener('click',e=>{e.stopPropagation();audio.toggle();});
   fullscreenBtn.addEventListener('click',async()=>{if(!document.fullscreenEnabled){showToast('TELA CHEIA NÃO DISPONÍVEL',1.2);return;}try{if(!document.fullscreenElement){await shell.requestFullscreen();try{if(screen.orientation&&screen.orientation.lock)await screen.orientation.lock('portrait-primary');}catch(_e){}}else await document.exitFullscreen();}catch(e){showToast('TELA CHEIA NÃO DISPONÍVEL',1.2);}});
@@ -1148,7 +1301,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     }else if(state.level===3&&state.phase4Step==='done'){
       missionRibbon.textContent='2/2 • FAIXA LIVRE • SIGA COM ATENÇÃO';
     }else if(state.level===4&&state.phase5Step==='bump'){
-      missionRibbon.textContent='1/5 • ATÉ 40 km/h • LOMBADA À FRENTE • REDUZA';
+      missionRibbon.textContent=state.distance<250?'1/5 • VIA ATÉ 40 km/h • LOMBADA À FRENTE':'1/5 • LOMBADA • REDUZA PARA 20 km/h • PAINEL MOSTRA SUA VELOCIDADE';
     }else if(state.level===4&&state.phase5Step==='schoolApproach'){
       missionRibbon.textContent=state.distance<940?'2/5 • ÁREA ESCOLAR À FRENTE • REDUZA PARA 20':'2/5 • ÁREA ESCOLAR • 20 km/h • PARE ANTES DA FAIXA';
     }else if(state.level===4&&state.phase5Step==='schoolCrossing'){
@@ -1162,7 +1315,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     }else if(state.level===4&&state.phase5Step==='pedestrianCrossing'){
       missionRibbon.textContent='4/5 • PEDESTRE ATRAVESSANDO • AGUARDE';
     }else if(state.level===4&&state.phase5Step==='parkingApproach'){
-      missionRibbon.textContent='5/5 • ESTACIONE NA VAGA BRANCA • AMARELO/GARAGEM = PROIBIDO';
+      missionRibbon.textContent='5/5 • VAGAS À DIREITA • BRANCO = PODE • AMARELO = PROIBIDO';
     }else missionRibbon.textContent=l.ribbon;
   },90);
   updateSoundButton();resetState();showIntro();draw();requestAnimationFrame(loop);
