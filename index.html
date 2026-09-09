@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Semana do Trânsito — Prefeitura de Itapetininga</title>
+<title>RoadQuest — Missão Trânsito Seguro | Prefeitura de Itapetininga</title>
 <!-- COMPARTILHAMENTO: ajuste estas URLs quando publicar no domínio definitivo -->
-<meta name="description" content="Jogue o game da Semana do Trânsito da Prefeitura de Itapetininga. Trânsito seguro é responsabilidade de todos.">
+<meta name="description" content="RoadQuest — Missão: Trânsito seguro é responsabilidade de todos. Um game da Semana do Trânsito da Prefeitura de Itapetininga.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Semana do Trânsito | Prefeitura de Itapetininga">
-<meta property="og:description" content="Trânsito seguro é responsabilidade de todos. Jogue, aprenda e compartilhe.">
+<meta property="og:title" content="RoadQuest | Missão Trânsito Seguro — Prefeitura de Itapetininga">
+<meta property="og:description" content="RoadQuest: cumpra os desafios de trânsito seguro e desbloqueie o selo Condutor Consciente.">
 <meta property="og:url" content="https://www.itapetininga.sp.gov.br/semana-do-transito/">
 <meta property="og:image" content="https://www.itapetininga.sp.gov.br/semana-do-transito/semana-transito-compartilhamento.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Semana do Trânsito | Prefeitura de Itapetininga">
-<meta name="twitter:description" content="Trânsito seguro é responsabilidade de todos. Jogue, aprenda e compartilhe.">
+<meta name="twitter:title" content="RoadQuest | Missão Trânsito Seguro">
+<meta name="twitter:description" content="RoadQuest: complete os 6 requisitos da missão e desbloqueie o selo Condutor Consciente.">
 <meta name="twitter:image" content="https://www.itapetininga.sp.gov.br/semana-do-transito/semana-transito-compartilhamento.png">
 <style>
 :root{
@@ -68,6 +68,8 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated;image-rend
 .top-actions{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:13px}
 .share-quiet{appearance:none;border:1px solid rgba(255,255,255,.42);background:rgba(255,255,255,.06);color:#fff;padding:8px 11px;font:900 10px "Courier New",monospace;text-transform:uppercase;cursor:pointer;min-height:36px;letter-spacing:.03em}
 .share-quiet:active{background:rgba(244,197,66,.2)}
+.intro-share-menu{display:none;gap:6px;justify-content:center;flex-wrap:wrap;margin:8px auto 0;max-width:400px}
+.intro-share-menu.show{display:flex}
 .final-share{display:none;margin:16px auto 0;padding:14px;background:#0b151b;border:2px solid var(--accent);max-width:440px;text-align:left}
 .final-share.show{display:block}
 .final-share strong{display:block;color:#fff;font-size:15px;line-height:1.25;margin-bottom:5px}
@@ -121,7 +123,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
 </head>
 <body>
 <main class="game-shell" id="gameShell">
-  <section class="game-frame" id="gameRoot" tabindex="0" aria-label="Jogo educativo da Semana do Trânsito">
+  <section class="game-frame" id="gameRoot" tabindex="0" aria-label="RoadQuest — jogo educativo da Semana do Trânsito">
     <div class="canvas-wrap">
       <canvas id="game" width="1080" height="1920" aria-label="Jogo 2D vertical de trânsito visto de cima"></canvas>
       <div class="top-fade" aria-hidden="true"></div>
@@ -132,7 +134,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
         <span id="speedHud" class="speed">0 km/h</span>
         <span id="scoreHud" class="score">SEGURANÇA 000</span>
       </div>
-      <div id="missionRibbon" class="mission-ribbon">SEMANA DO TRÂNSITO</div>
+      <div id="missionRibbon" class="mission-ribbon">ROADQUEST • MISSÃO TRÂNSITO SEGURO</div>
       <div id="toast" class="toast" aria-live="polite"></div>
       <button id="gameMuteBtn" class="game-mute" type="button" aria-pressed="false" aria-label="Desligar som">🔊 SOM</button>
 
@@ -142,7 +144,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
           <button class="mobile-btn left" data-key="left" type="button" aria-label="Virar para a esquerda">◀</button>
           <div class="mobile-center" aria-hidden="true">DIRIJA</div>
           <button class="mobile-btn right" data-key="right" type="button" aria-label="Virar para a direita">▶</button>
-          <button class="mobile-btn down" data-key="down" type="button" aria-label="Frear">▼</button>
+          <button class="mobile-btn down" data-key="down" type="button" aria-label="Frear; segure por 1,5 segundo com o carro parado para engatar a ré">▼</button>
         </div>
         <div class="mobile-actions">
           <button class="mobile-btn" data-tap="pause" type="button" aria-label="Pausar o jogo">Ⅱ<small>PAUSE</small></button>
@@ -152,9 +154,9 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
 
       <div id="overlay" class="overlay intro-mode">
         <div class="overlay-card">
-          <div id="overlayEyebrow" class="eyebrow">18 A 25 DE SETEMBRO</div>
-          <h1 id="overlayTitle">SEMANA DO TRÂNSITO</h1>
-          <p id="overlayText">UMA CAMPANHA DA PREFEITURA DE ITAPETININGA</p>
+          <div id="overlayEyebrow" class="eyebrow">SEMANA DO TRÂNSITO • 18 A 25 DE SETEMBRO</div>
+          <h1 id="overlayTitle">ROADQUEST</h1>
+          <p id="overlayText">MISSÃO: TRÂNSITO SEGURO É RESPONSABILIDADE DE TODOS.</p>
           <div class="intro-art" aria-hidden="true"><span class="intro-road-line"></span><span class="intro-car"></span></div>
           <div id="missionBox" class="mission-box">
             <strong>MISSÃO</strong>
@@ -164,13 +166,19 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
           <p id="overlayTip" class="overlay-tip">▲ acelera • ▼ freia • ◀ ▶ dirigem</p>
           <div class="top-actions">
             <button id="startBtn" class="pixel-btn" type="button">Jogar</button>
-            <button id="fullscreenBtn" class="pixel-btn secondary" type="button">Tela cheia</button>
           </div>
-          <button id="introShareBtn" class="share-quiet" type="button">↗ Compartilhar o game</button>
+          <button id="introShareBtn" class="share-quiet" type="button">↗ Compartilhar RoadQuest</button>
+          <div id="introShareMenu" class="intro-share-menu" aria-label="Opções de compartilhamento">
+            <button class="share-link-btn" data-share-network="wa" type="button">WHATSAPP</button>
+            <button class="share-link-btn" data-share-network="fb" type="button">FACEBOOK</button>
+            <button class="share-link-btn" data-share-network="x" type="button">X</button>
+            <button class="share-link-btn" data-share-copy type="button">COPIAR LINK</button>
+          </div>
+          <div id="introShareStatus" class="share-status" role="status"></div>
           <div id="finalShare" class="final-share" aria-live="polite">
-            <strong>COMPARTILHE O DESAFIO</strong>
-            <p>Você concluiu o game. Convide seus amigos a testar também os conhecimentos no trânsito.</p>
-            <button id="finalShareBtn" class="pixel-btn final-share-main" type="button">↗ COMPARTILHAR O GAME</button>
+            <strong>🏆 CONDUTOR CONSCIENTE</strong>
+            <p><strong style="display:inline;color:#f4c542">6/6 requisitos:</strong> limites de velocidade • travessia escolar • semáforo • faixa de pedestres • sentido correto da via • estacionamento permitido.</p>
+            <button id="finalShareBtn" class="pixel-btn final-share-main" type="button">↗ COMPARTILHAR MEU RESULTADO</button>
             <div class="share-links">
               <button id="waShareBtn" class="share-link-btn" type="button">WHATSAPP</button>
               <button id="fbShareBtn" class="share-link-btn" type="button">FACEBOOK</button>
@@ -189,10 +197,10 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
   </section>
 
   <aside class="control-help">
-    <strong>COMO JOGAR</strong>
-    <div class="desktop-only">No computador: use as setas ou WASD para dirigir.</div>
-    <div class="keys desktop-only"><kbd>↑</kbd><kbd>W</kbd> acelerar <kbd>↓</kbd><kbd>S</kbd> frear <kbd>←</kbd><kbd>→</kbd><kbd>A</kbd><kbd>D</kbd> guiar <kbd>P</kbd> pausa <kbd>R</kbd> reinicia <kbd>M</kbd> som</div>
-    <div class="note">No celular, os controles ficam dentro da própria tela. ▲ acelera, ▼ freia, ◀ ▶ dirigem. Pause e Restart ficam no canto inferior direito.</div>
+    <strong>ROADQUEST v1.0.0 • COMO JOGAR</strong>
+    <div class="desktop-only">No computador: use as setas ou WASD para dirigir. O carro só esterça quando está em movimento.</div>
+    <div class="keys desktop-only"><kbd>↑</kbd><kbd>W</kbd> acelerar <kbd>↓</kbd><kbd>S</kbd> frear / segure 1,5s parado para ré <kbd>←</kbd><kbd>→</kbd><kbd>A</kbd><kbd>D</kbd> guiar <kbd>P</kbd> pausa <kbd>R</kbd> reinicia <kbd>M</kbd> som</div>
+    <div class="note">No celular, os controles ficam dentro da própria tela. ▲ acelera; ▼ freia e, se mantido por 1,5s com o carro parado, engata a ré; ◀ ▶ esterçam somente com o veículo em movimento. Pause e Restart ficam no canto inferior direito.</div>
     <div class="note"><strong style="display:inline;font-size:inherit">Regra geral:</strong> permaneça na mão correta, à direita da linha dupla amarela contínua. Entrar na contramão encerra a missão.</div>
     <button id="soundBtn" class="pixel-btn secondary sound-btn desktop-only" type="button" aria-pressed="false">🔊 SOM: LIGADO</button>
   </aside>
@@ -200,6 +208,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
 <script>
 (() => {
   'use strict';
+  // RoadQuest v1.0.0 — Semana do Trânsito | Prefeitura de Itapetininga
   const root = document.getElementById('gameRoot');
   const shell = document.getElementById('gameShell');
   const canvas = document.getElementById('game');
@@ -219,10 +228,11 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
   const missionLimit = document.getElementById('missionLimit');
   const overlayTip = document.getElementById('overlayTip');
   const startBtn = document.getElementById('startBtn');
-  const fullscreenBtn = document.getElementById('fullscreenBtn');
   const soundBtn = document.getElementById('soundBtn');
   const gameMuteBtn = document.getElementById('gameMuteBtn');
   const introShareBtn = document.getElementById('introShareBtn');
+  const introShareMenu = document.getElementById('introShareMenu');
+  const introShareStatus = document.getElementById('introShareStatus');
   const finalShare = document.getElementById('finalShare');
   const finalShareBtn = document.getElementById('finalShareBtn');
   const waShareBtn = document.getElementById('waShareBtn');
@@ -232,9 +242,11 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
   const shareStatus = document.getElementById('shareStatus');
 
   // COMPARTILHAMENTO: troque SHARE_URL pela URL definitiva quando publicar.
-  const SHARE_URL='https://www.itapetininga.sp.gov.br/semana-do-transito/';
-  const SHARE_TITLE='Semana do Trânsito | Prefeitura de Itapetininga';
-  const SHARE_TEXT='Trânsito seguro é responsabilidade de todos. Jogue o game da Semana do Trânsito da Prefeitura de Itapetininga.';
+  const PUBLISHED_SHARE_URL='https://www.itapetininga.sp.gov.br/semana-do-transito/';
+  const SHARE_URL=PUBLISHED_SHARE_URL;
+  const SHARE_TITLE='RoadQuest | Missão Trânsito Seguro — Prefeitura de Itapetininga';
+  const SHARE_TEXT='RoadQuest: encare a missão Trânsito Seguro e pratique limites de velocidade, travessia escolar, semáforo, faixa de pedestres, sentido correto da via e estacionamento permitido.';
+  const RESULT_SHARE_TEXT='Concluí o RoadQuest — Missão Trânsito Seguro — e desbloqueei o selo Condutor Consciente: 6/6 requisitos atendidos — limites de velocidade, travessia escolar, semáforo, faixa de pedestres, sentido correto da via e estacionamento permitido. Trânsito seguro é responsabilidade de todos. Você consegue também?';
 
   const CANVAS_W=1080,CANVAS_H=1920;
   const W=656;
@@ -246,7 +258,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
   const FINAL_YELLOW_ZONES=[[3650,3750],[4010,4110]];
   const FINAL_GARAGES=[{world:3700,label:'CASA 1'},{world:4060,label:'CASA 2'}];
   const CAR_Y=790;
-  const MOVE_SCALE=7.2; // cenário mais veloz para transmitir melhor 20–40 km/h no formato vertical
+  const MOVE_SCALE=7.2; // cenário calibrado para transmitir melhor a faixa de 30–40 km/h no formato vertical
   const keys={up:false,down:false,left:false,right:false};
 
   const levels=[
@@ -257,27 +269,27 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
       success:'Chegar bem importa mais que chegar rápido.'
     },
     {
-      title:'FASE 02',name:'ÁREA ESCOLAR',limit:20,target:2160,
-      mission:'Entre na área escolar a no máximo 20 km/h. Pare antes da primeira linha da faixa e só volte a acelerar depois que TODAS as crianças chegarem à outra calçada.',
-      ribbon:'ÁREA ESCOLAR • 20 km/h • PARE ANTES DA FAIXA',
+      title:'FASE 02',name:'ÁREA ESCOLAR',limit:30,target:2160,
+      mission:'Entre na área escolar a no máximo 30 km/h. Pare antes da primeira linha da faixa e só volte a acelerar depois que TODAS as crianças chegarem à outra calçada.',
+      ribbon:'ÁREA ESCOLAR • 30 km/h • PARE ANTES DA FAIXA',
       success:'Proteja hoje o nosso futuro.'
     },
     {
       title:'FASE 03',name:'O CRUZAMENTO',limit:40,target:1580,
-      mission:'Aproxime-se do cruzamento, pare antes da linha no sinal vermelho e só avance quando ficar verde.',
+      mission:'Aproxime-se do cruzamento e observe o ciclo completo: vermelho = pare antes da linha; amarelo = atenção; verde = avance somente se o cruzamento estiver livre.',
       ribbon:'CRUZAMENTO • PARE NO VERMELHO • SIGA NO VERDE',
       success:'No cruzamento, cada movimento tem sua vez.'
     },
     {
       title:'FASE 04',name:'CRUZAMENTO + PEDESTRE',limit:40,target:2340,
-      mission:'Primeiro, pare no sinal vermelho e aguarde o verde para atravessar o cruzamento. Mais à frente, reduza, pare antes da faixa e espere o pedestre concluir a travessia.',
+      mission:'Primeiro, observe o ciclo do semáforo: não avance no vermelho e só atravesse quando houver condição segura. Mais à frente, pare antes da faixa e espere o pedestre concluir a travessia.',
       ribbon:'1º CRUZAMENTO • DEPOIS FAIXA DE PEDESTRES • ATENÇÃO',
       success:'Sinalização e preferência trabalham juntas para tornar o caminho mais seguro.'
     },
     {
       title:'FASE 05',name:'DESAFIO FINAL',limit:40,target:4520,
-      mission:'Aplique tudo o que aprendeu: mantenha-se até 40 km/h, reduza para 20 km/h na lombada, respeite a área escolar e a travessia das crianças, pare antes da linha no sinal vermelho, dê preferência ao pedestre e estacione em uma das vagas BRANCAS — nunca na guia amarela ou em frente a garagens.',
-      ribbon:'DESAFIO FINAL • 40 km/h • LOMBADA 20 km/h • TODAS AS REGRAS',
+      mission:'Aplique tudo o que aprendeu: comece na via coletora a 40 km/h, reduza para 20 km/h na aproximação e passagem pela lombada, siga a 30 km/h pela via local até concluir a área escolar e o cruzamento; depois retorne ao limite de 40 km/h, dê preferência ao pedestre e estacione em uma vaga BRANCA.',
+      ribbon:'DESAFIO FINAL • 40 → 20 → 30 → 40 km/h • TODAS AS REGRAS',
       success:'Você aplicou todas as regras no mesmo trajeto. No trânsito, cada escolha segura conta.'
     }
   ];
@@ -337,8 +349,9 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
   const state={
     running:false,paused:false,level:0,score:0,last:performance.now(),toastTimer:0,intro:true,
     car:{x:PLAYER_LANE_X,speed:0},distance:0,overLimitTime:0,laneWarn:0,wrongWayWarn:0,levelTime:0,
+    downHold:0,reverseNotified:false,crossTraffic:[],crossTrafficStopLatched:false,
     phase:'drive',holdTimer:0,crossT:0,crossDone:false,prematureMoveTimer:0,
-    lightGreen:false,stoppedCorrectly:false,pedestrianAlert:false,
+    lightGreen:false,signalState:'red',horizontalSignal:'green',signalStage:'horizontalGreen',signalRemaining:10,intersectionEntered:false,stoppedCorrectly:false,pedestrianAlert:false,
     signalTimer:0,signalTimerStarted:false,
     phase4Step:'intersection',phase4IntersectionDone:false,
     phase5Step:'bump',phase5BumpDone:false,phase5SchoolDone:false,phase5IntersectionDone:false,phase5PedDone:false,
@@ -349,7 +362,8 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
 
   function resetState(){
     state.car.x=PLAYER_LANE_X;state.car.speed=0;state.distance=0;state.overLimitTime=0;state.laneWarn=0;state.wrongWayWarn=0;state.levelTime=0;
-    state.phase='drive';state.holdTimer=0;state.crossT=0;state.crossDone=false;state.prematureMoveTimer=0;state.lightGreen=false;state.stoppedCorrectly=false;state.pedestrianAlert=false;
+    state.downHold=0;state.reverseNotified=false;state.crossTraffic=[];state.crossTrafficStopLatched=false;
+    state.phase='drive';state.holdTimer=0;state.crossT=0;state.crossDone=false;state.prematureMoveTimer=0;state.lightGreen=false;state.signalState='red';state.horizontalSignal='green';state.signalStage='horizontalGreen';state.signalRemaining=10;state.intersectionEntered=false;state.stoppedCorrectly=false;state.pedestrianAlert=false;
     state.signalTimer=0;state.signalTimerStarted=false;
     state.phase4Step='intersection';state.phase4IntersectionDone=false;
     state.phase5Step='bump';state.phase5BumpDone=false;state.phase5SchoolDone=false;state.phase5IntersectionDone=false;state.phase5PedDone=false;
@@ -359,22 +373,20 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
   }
 
   function setShareStatus(msg){
-    if(!shareStatus)return;
-    shareStatus.textContent=msg||'';
-    if(msg)setTimeout(()=>{if(shareStatus.textContent===msg)shareStatus.textContent='';},2200);
+    const targets=[shareStatus,introShareStatus].filter(Boolean);
+    targets.forEach(el=>el.textContent=msg||'');
+    if(msg)setTimeout(()=>targets.forEach(el=>{if(el.textContent===msg)el.textContent='';}),2200);
   }
 
-  async function shareGame(){
+  async function shareGame(mode='game'){
     audio.init();
-    const data={title:SHARE_TITLE,text:SHARE_TEXT,url:SHARE_URL};
+    const isResult=mode==='result';
+    const data={title:isResult?'Condutor Consciente | RoadQuest':SHARE_TITLE,text:isResult?RESULT_SHARE_TEXT:SHARE_TEXT,url:SHARE_URL};
     if(navigator.share){
       try{await navigator.share(data);setShareStatus('COMPARTILHAMENTO ABERTO');return;}catch(err){if(err&&err.name==='AbortError')return;}
     }
-    setShareStatus('ESCOLHA UMA REDE ABAIXO OU COPIE O LINK');
-    if(finalShare&&!finalShare.classList.contains('show')){
-      // Na abertura, o fallback mais útil é copiar o endereço diretamente.
-      try{await navigator.clipboard.writeText(SHARE_URL);setShareStatus('LINK COPIADO');}catch(_e){}
-    }
+    setShareStatus('ESCOLHA UMA REDE OU COPIE O LINK');
+    if(!isResult&&introShareMenu)introShareMenu.classList.toggle('show');
   }
 
   async function copyShareLink(){
@@ -386,10 +398,11 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     }
   }
 
-  function openShareNetwork(network){
-    const u=encodeURIComponent(SHARE_URL),t=encodeURIComponent(SHARE_TEXT);
+  function openShareNetwork(network,mode='game'){
+    const shareText=mode==='result'?RESULT_SHARE_TEXT:SHARE_TEXT;
+    const u=encodeURIComponent(SHARE_URL),t=encodeURIComponent(shareText);
     let target='';
-    if(network==='wa')target='https://wa.me/?text='+encodeURIComponent(SHARE_TEXT+' '+SHARE_URL);
+    if(network==='wa')target='https://wa.me/?text='+encodeURIComponent(shareText+' '+SHARE_URL);
     if(network==='fb')target='https://www.facebook.com/sharer/sharer.php?u='+u;
     if(network==='x')target='https://twitter.com/intent/tweet?text='+t+'&url='+u;
     if(target)window.open(target,'_blank','noopener,noreferrer');
@@ -399,16 +412,17 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     state.intro=true;state.running=false;state.paused=false;state.transition=false;state.result=null;
     overlay.classList.add('intro-mode');
     finalShare.classList.remove('show');
+    introShareMenu.classList.remove('show');
     introShareBtn.style.display='inline-block';
     setShareStatus('');
-    overlayEyebrow.textContent='18 A 25 DE SETEMBRO';
-    overlayTitle.textContent='SEMANA DO TRÂNSITO';
-    overlayText.textContent='UMA CAMPANHA DA PREFEITURA DE ITAPETININGA';
+    overlayEyebrow.textContent='SEMANA DO TRÂNSITO • 18 A 25 DE SETEMBRO';
+    overlayTitle.textContent='ROADQUEST';
+    overlayText.textContent='MISSÃO: TRÂNSITO SEGURO É RESPONSABILIDADE DE TODOS.';
     missionText.textContent='';
     missionLimit.style.display='none';
-    overlayTip.textContent='5 FASES • ESCOLHAS SEGURAS FAZEM VOCÊ AVANÇAR';
+    overlayTip.textContent='ROADQUEST v1.0.0 • 5 FASES • ESCOLHAS SEGURAS FAZEM VOCÊ AVANÇAR';
     startBtn.textContent='COMEÇAR';
-    missionRibbon.textContent='SEMANA DO TRÂNSITO • 18 A 25 DE SETEMBRO';
+    missionRibbon.textContent='ROADQUEST • MISSÃO TRÂNSITO SEGURO • 18 A 25 DE SETEMBRO';
     overlay.classList.remove('hidden');
   }
 
@@ -417,6 +431,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     const l=levels[state.level];
     overlay.classList.remove('intro-mode');
     finalShare.classList.remove('show');
+    introShareMenu.classList.remove('show');
     introShareBtn.style.display='none';
     setShareStatus('');
     overlayEyebrow.textContent='MISSÃO • '+l.title;
@@ -425,7 +440,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     missionText.textContent=l.mission;
     missionLimit.textContent='LIMITE '+l.limit+' km/h';
     missionLimit.style.display='inline-block';
-    overlayTip.textContent='▲/W acelera • ▼/S freia • ◀ ▶ / A D dirigem • P pausa • R reinicia • M som';
+    overlayTip.textContent='▲/W acelera • ▼/S freia; segure 1,5s parado para ré • ◀ ▶ / A D esterçam • P pausa • R reinicia • M som';
     startBtn.textContent='INICIAR MISSÃO';
     missionRibbon.textContent=l.ribbon;
     overlay.classList.remove('hidden');
@@ -446,12 +461,12 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     if(state.transition)return;
     overlay.classList.remove('intro-mode');
     state.transition=true;state.result='fail';state.running=false;audio.updateEngine(false,0);audio.fail();
-    finalShare.classList.remove('show');introShareBtn.style.display='none';setShareStatus('');
+    finalShare.classList.remove('show');introShareMenu.classList.remove('show');introShareBtn.style.display='none';setShareStatus('');
     overlayEyebrow.textContent='MISSÃO INTERROMPIDA';
     overlayTitle.textContent='TENTE DE NOVO';
     overlayText.textContent=reason;
     missionText.textContent=levels[state.level].mission;
-    missionLimit.textContent='LIMITE '+levels[state.level].limit+' km/h';
+    missionLimit.textContent='LIMITE '+effectiveLimit()+' km/h';
     missionLimit.style.display='inline-block';
     overlayTip.textContent='Recomece a fase e cumpra a missão.';
     startBtn.textContent='REINICIAR FASE';
@@ -462,12 +477,12 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     if(state.transition)return;
     overlay.classList.remove('intro-mode');
     state.transition=true;state.result='complete';state.running=false;state.score+=100;audio.updateEngine(false,0);audio.success();
-    overlayEyebrow.textContent='FASE CONCLUÍDA • +100 SEGURANÇA';
-    overlayTitle.textContent=state.level===levels.length-1?'VOCÊ ZEROU O JOGO!':'MISSÃO CUMPRIDA!';
+    overlayEyebrow.textContent=state.level===levels.length-1?'SELO DESBLOQUEADO • 6/6 REQUISITOS':'FASE CONCLUÍDA • +100 SEGURANÇA';
+    overlayTitle.textContent=state.level===levels.length-1?'CONDUTOR CONSCIENTE':'MISSÃO CUMPRIDA!';
     overlayText.textContent=levels[state.level].success;
-    missionText.textContent=state.level===levels.length-1?'No trânsito real, o objetivo não é chegar primeiro. É todos chegarem bem.':'Prepare-se: a próxima fase traz uma nova situação de trânsito.';
+    missionText.textContent=state.level===levels.length-1?'Você cumpriu 6/6 requisitos: limites de velocidade, travessia escolar, semáforo, faixa de pedestres, sentido correto da via e estacionamento permitido.':'Prepare-se: a próxima fase traz uma nova situação de trânsito.';
     missionLimit.style.display='none';
-    overlayTip.textContent=state.level===levels.length-1?'SEMANA DO TRÂNSITO • TRÂNSITO SEGURO É RESPONSABILIDADE DE TODOS.':'Pressione ENTER ou toque no botão para continuar.';
+    overlayTip.textContent=state.level===levels.length-1?'ROADQUEST • MISSÃO CUMPRIDA • TRÂNSITO SEGURO É RESPONSABILIDADE DE TODOS.':'Pressione ENTER ou toque no botão para continuar.';
     startBtn.textContent=state.level===levels.length-1?'JOGAR NOVAMENTE':'PRÓXIMA FASE';
     introShareBtn.style.display='none';
     finalShare.classList.toggle('show',state.level===levels.length-1);
@@ -514,11 +529,153 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
   }
 
   function effectiveLimit(){
-    if(state.level===4&&((state.phase5Step==='schoolApproach'&&state.distance>=940)||state.phase5Step==='schoolCrossing'))return 20;
+    if(state.level===4){
+      if(state.phase5Step==='bump')return state.distance>=260?20:40;
+      if(state.phase5Step==='schoolApproach'||state.phase5Step==='schoolCrossing'||state.phase5Step==='intersectionApproach')return 30;
+      return 40;
+    }
     return levels[state.level].limit;
   }
 
   function stopDistance(level){return level===1?1440:level===2?1400:level===3?1400:null;}
+
+  function initCrossTraffic(){
+    state.crossTraffic=[
+      {x:454,dir:1,lane:-43,color:'#c95b5b',mode:'move',stopX:null},
+      {x:100,dir:1,lane:-43,color:'#d9a146',mode:'move',stopX:null},
+      {x:202,dir:-1,lane:42,color:'#5f8cc9',mode:'move',stopX:null},
+      {x:556,dir:-1,lane:42,color:'#8d74bd',mode:'move',stopX:null}
+    ];
+    state.crossTrafficStopLatched=false;
+  }
+
+  function getSignalCycle(){
+    const t=((state.signalTimer%28)+28)%28;
+    if(t<10)return {vertical:'red',horizontal:'green',stage:'horizontalGreen',remaining:10-t};
+    if(t<14)return {vertical:'red',horizontal:'yellow',stage:'horizontalYellow',remaining:14-t};
+    if(t<24)return {vertical:'green',horizontal:'red',stage:'verticalGreen',remaining:24-t};
+    return {vertical:'yellow',horizontal:'red',stage:'verticalYellow',remaining:28-t};
+  }
+
+  function startSignalCycle(){
+    state.signalTimerStarted=true;state.signalTimer=0;state.intersectionEntered=false;state.stoppedCorrectly=false;
+    state.signalState='red';state.horizontalSignal='green';state.signalStage='horizontalGreen';state.signalRemaining=10;state.lightGreen=false;
+    initCrossTraffic();
+  }
+
+  function prepareCrossTrafficToStop(){
+    const leftWaiting=state.crossTraffic.filter(c=>c.dir===1&&c.x<ROAD_L-30).sort((a,b)=>b.x-a.x);
+    const rightWaiting=state.crossTraffic.filter(c=>c.dir===-1&&c.x>ROAD_R+30).sort((a,b)=>a.x-b.x);
+    leftWaiting.forEach((c,i)=>{c.mode='wait';c.stopX=ROAD_L-34-i*54;});
+    rightWaiting.forEach((c,i)=>{c.mode='wait';c.stopX=ROAD_R+34+i*54;});
+    state.crossTraffic.forEach(c=>{
+      if(c.mode==='wait')return;
+      const alreadyPassed=(c.dir===1&&c.x>ROAD_R+70)||(c.dir===-1&&c.x<ROAD_L-70);
+      c.mode=alreadyPassed?'done':'clear';
+    });
+    state.crossTrafficStopLatched=true;
+  }
+
+  function releaseCrossTraffic(){
+    state.crossTraffic.forEach((c,i)=>{
+      if(c.mode==='done')c.x=c.dir===1?-90-i*75:W+90+i*75;
+      c.mode='move';c.stopX=null;
+    });
+    state.crossTrafficStopLatched=false;
+  }
+
+  function updateSignalCycle(dt){
+    if(!state.signalTimerStarted)return;
+    const previousStage=state.signalStage;
+    state.signalTimer=(state.signalTimer+dt)%28;
+    const cycle=getSignalCycle();
+    state.signalState=cycle.vertical;state.horizontalSignal=cycle.horizontal;state.signalStage=cycle.stage;state.signalRemaining=cycle.remaining;state.lightGreen=cycle.vertical==='green';
+    if(cycle.stage!==previousStage){
+      if(cycle.stage==='horizontalYellow')prepareCrossTrafficToStop();
+      if(cycle.stage==='horizontalGreen')releaseCrossTraffic();
+    }
+  }
+
+  function updateCrossTraffic(dt){
+    if(!state.signalTimerStarted)return;
+    if(!state.crossTraffic.length)initCrossTraffic();
+    const v=96;
+    if(state.horizontalSignal==='green'){
+      if(state.crossTrafficStopLatched)releaseCrossTraffic();
+      for(const c of state.crossTraffic){
+        c.mode='move';c.x+=c.dir*v*dt;
+        if(c.dir===1&&c.x>W+90)c.x=-90;
+        if(c.dir===-1&&c.x<-90)c.x=W+90;
+      }
+      return;
+    }
+    if(!state.crossTrafficStopLatched)prepareCrossTrafficToStop();
+    for(const c of state.crossTraffic){
+      if(c.mode==='wait'){
+        if(c.dir===1)c.x=Math.min(c.stopX,c.x+v*dt);
+        else c.x=Math.max(c.stopX,c.x-v*dt);
+      }else if(c.mode==='clear'){
+        c.x+=c.dir*v*dt;
+        if((c.dir===1&&c.x>ROAD_R+80)||(c.dir===-1&&c.x<ROAD_L-80))c.mode='done';
+      }
+    }
+  }
+
+  function crossTrafficWorldY(){
+    if(state.level===2)return 1400;
+    if(state.level===3&&state.phase4Step==='intersection')return 1040;
+    if(state.level===4&&state.phase5Step==='intersectionApproach')return 2260;
+    return null;
+  }
+
+  function crossTrafficClearing(){
+    return state.crossTraffic.some(c=>(c.mode==='clear'||c.mode==='move')&&c.x>ROAD_L-65&&c.x<ROAD_R+65);
+  }
+
+  function checkCrossTrafficCollision(){
+    const wy=crossTrafficWorldY();
+    if(wy===null||!state.signalTimerStarted)return false;
+    const cy=sy(wy);
+    for(const c of state.crossTraffic){
+      if(c.mode==='done'||c.mode==='wait')continue;
+      const ny=cy+c.lane;
+      if(Math.abs(ny-CAR_Y)<31&&Math.abs(c.x-state.car.x)<34){
+        fail('COLISÃO NO CRUZAMENTO: havia um veículo atravessando. Respeite o sinal e confirme que o cruzamento está livre antes de avançar.');
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function timeUntilVerticalGreen(){
+    if(!state.signalTimerStarted)return 14;
+    const t=((state.signalTimer%28)+28)%28;
+    if(t<14)return 14-t;
+    if(t<24)return 0;
+    return 42-t;
+  }
+
+  function signalStatusText(prefix=''){
+    const pre=prefix?prefix+' • ':'';
+    if(state.signalState==='red')return pre+'SINAL VERMELHO • VERDE EM '+Math.max(1,Math.ceil(timeUntilVerticalGreen()))+'s • NÃO AVANCE A LINHA';
+    if(state.signalState==='green')return pre+'SINAL VERDE • '+(crossTrafficClearing()?'CRUZAMENTO OCUPADO • AGUARDE':'PODE SEGUIR');
+    return pre+'SINAL AMARELO • ATENÇÃO • VERMELHO EM '+Math.max(1,Math.ceil(state.signalRemaining))+'s';
+  }
+
+  function checkIntersectionDecision(redLineLimit,stopY){
+    if(!state.signalTimerStarted)return false;
+    if(!state.intersectionEntered&&state.distance>=redLineLimit){
+      if(state.signalState==='red'){
+        fail('Você avançou a linha de retenção com o sinal vermelho. A decisão é do condutor: pare antes da linha e aguarde a abertura do sinal.');
+        return true;
+      }
+      state.intersectionEntered=true;
+    }
+    if(!state.intersectionEntered&&state.signalState==='red'&&state.distance>=stopY-28&&Math.abs(state.car.speed)<1.4&&!state.stoppedCorrectly){
+      state.stoppedCorrectly=true;showToast('PARADA CORRETA • VOCÊ CONTINUA NO CONTROLE',1.2);
+    }
+    return false;
+  }
 
   function update(dt){
     if(!state.running||state.paused)return;
@@ -527,57 +684,82 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     
     const car=state.car;
     const l=levels[state.level];
-    const accelRate=keys.up?23:0;
-    const braking=keys.down?46:0;
     const schoolCrossing=state.level===1&&state.phase==='schoolCrossing';
     const phase4PedCrossing=state.level===3&&state.phase4Step==='pedestrian'&&state.phase==='hold';
     const phase5SchoolCrossing=state.level===4&&state.phase5Step==='schoolCrossing';
     const phase5PedCrossing=state.level===4&&state.phase5Step==='pedestrianCrossing';
-    if(schoolCrossing||phase4PedCrossing||phase5SchoolCrossing||phase5PedCrossing){
-      // Durante uma travessia o jogador deve manter o carro parado. Uma breve
-      // tolerância evita punição no mesmo quadro em que a parada é reconhecida.
+    const crossingLocked=schoolCrossing||phase4PedCrossing||phase5SchoolCrossing||phase5PedCrossing;
+
+    if(crossingLocked){
       if(state.holdTimer>.35&&keys.up){
         if(schoolCrossing||phase5SchoolCrossing)fail('Você arrancou antes de todas as crianças terminarem a travessia. Pare e aguarde a faixa ficar livre.');
         else fail('Você arrancou antes de o pedestre terminar a travessia. Pare e aguarde a faixa ficar completamente livre.');
         return;
       }
-      car.speed=0;
+      car.speed=0;state.downHold=0;state.reverseNotified=false;
     }else if(state.phase==='hold'){
-      car.speed=Math.max(0,car.speed-70*dt);
+      const sign=Math.sign(car.speed);
+      car.speed=Math.abs(car.speed)>0.2?car.speed-sign*70*dt:0;
+      if(Math.sign(car.speed)!==sign)car.speed=0;
+      state.downHold=0;state.reverseNotified=false;
     }else{
-      if(accelRate)car.speed+=accelRate*dt;else car.speed-=5.5*dt;
-      if(braking)car.speed-=braking*dt;
+      // ↑ acelera para frente. Se estiver em ré, ↑ primeiro freia até zero.
+      if(keys.up){
+        state.downHold=0;state.reverseNotified=false;
+        if(car.speed<0)car.speed=Math.min(0,car.speed+48*dt);
+        else car.speed+=23*dt;
+      }else if(keys.down){
+        if(car.speed>0.25){
+          car.speed=Math.max(0,car.speed-46*dt);
+          state.downHold=0;state.reverseNotified=false;
+        }else{
+          car.speed=Math.min(0,car.speed);
+          state.downHold+=dt;
+          if(state.downHold>=1.5){
+            car.speed-=16*dt;
+            if(!state.reverseNotified){showToast('RÉ ENGATADA',.8);state.reverseNotified=true;}
+          }
+        }
+      }else{
+        state.downHold=0;state.reverseNotified=false;
+        if(car.speed>0)car.speed=Math.max(0,car.speed-5.5*dt);
+        else if(car.speed<0)car.speed=Math.min(0,car.speed+8*dt);
+      }
     }
-    car.speed=Math.max(0,Math.min(68,car.speed));
+    car.speed=Math.max(-15,Math.min(68,car.speed));
+    const absSpeed=Math.abs(car.speed);
 
-    const steer=92*(.35+Math.min(car.speed,40)/40);
-    if(keys.left)car.x-=steer*dt;if(keys.right)car.x+=steer*dt;
+    // Não existe deslocamento lateral com o carro parado. O esterçamento cresce com a velocidade.
+    if(absSpeed>.8){
+      const steer=92*Math.min(1,absSpeed/18);
+      if(keys.left)car.x-=steer*dt;
+      if(keys.right)car.x+=steer*dt;
+    }
     const minX=ROAD_L+24;
     const maxX=ROAD_R-24;
     car.x=Math.max(minX,Math.min(maxX,car.x));
 
     // Regra geral de circulação: as duas linhas amarelas contínuas separam as mãos.
-    // Encostar/invadir a divisão gera alerta; entrar de fato na mão contrária encerra a missão.
     const carHalfWidth=14;
     const touchesCenter=(car.x-carHalfWidth)<CENTER_X+7;
     const inWrongWay=(car.x+carHalfWidth)<CENTER_X-3;
-    if(inWrongWay&&car.speed>3){
+    if(inWrongWay&&absSpeed>3){
       state.wrongWayWarn+=dt;
       if(state.wrongWayWarn>.18){fail('CONTRAMÃO: você cruzou as duas linhas amarelas contínuas e entrou na mão oposta. Permaneça na sua faixa de circulação.');return;}
     }else state.wrongWayWarn=Math.max(0,state.wrongWayWarn-dt*4);
-    if(touchesCenter&&car.speed>5){
+    if(touchesCenter&&absSpeed>5){
       state.laneWarn+=dt;
       if(state.laneWarn>.10&&state.laneWarn<.24)showToast('LINHA DUPLA CONTÍNUA • NÃO ULTRAPASSE',1.1);
       if(state.laneWarn>1.35){fail('Você permaneceu sobre a linha dupla contínua. Volte para a sua faixa e não invada a mão contrária.');return;}
     }else state.laneWarn=Math.max(0,state.laneWarn-dt*2.8);
 
     const activeLimit=effectiveLimit();
-    const over=car.speed>activeLimit+.3;
+    const over=absSpeed>activeLimit+.3;
     speedHud.classList.toggle('over',over);
     if(over){state.overLimitTime+=dt;if(state.overLimitTime>.9){fail('Você ultrapassou o limite de '+activeLimit+' km/h. Reduza a velocidade e tente novamente.');return;}}
     else state.overLimitTime=Math.max(0,state.overLimitTime-dt*1.8);
 
-    if(state.phase!=='hold'&&state.phase!=='schoolCrossing')state.distance+=car.speed*MOVE_SCALE*dt;
+    if(state.phase!=='hold'&&state.phase!=='schoolCrossing')state.distance=Math.max(0,state.distance+car.speed*MOVE_SCALE*dt);
 
     if(state.level===0)updateSpeedLevel();
     if(state.level===1)updateSchool(dt);
@@ -585,10 +767,13 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     if(state.level===3)updatePhase4(dt);
     if(state.level===4)updateFinalChallenge(dt);
 
+    updateCrossTraffic(dt);
+    if(checkCrossTrafficCollision())return;
+
     const walking=(state.level===1&&state.phase==='schoolCrossing')||
       (state.level===3&&state.phase4Step==='pedestrian')||
       (state.level===4&&(state.phase5Step==='schoolCrossing'||state.phase5Step==='pedestrianCrossing'));
-    audio.updateEngine(keys.up&&state.running&&!state.paused,state.car.speed);
+    audio.updateEngine((keys.up||state.car.speed<-.5)&&state.running&&!state.paused,Math.abs(state.car.speed));
     audio.walk(walking,dt);
   }
 
@@ -604,10 +789,10 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
 
   function updateSchool(dt){
     const stopY=1440;
-    if(state.distance>1040 && !state.pedestrianAlert){state.pedestrianAlert=true;showToast('ÁREA ESCOLAR • REDUZA PARA 20',1.2);}
+    if(state.distance>1040 && !state.pedestrianAlert){state.pedestrianAlert=true;showToast('ÁREA ESCOLAR • REDUZA PARA 30',1.2);}
     if(state.phase==='drive' && !state.crossDone && state.distance>=stopY-28){
       if(state.distance>stopY+7){fail('Você passou da linha de retenção. Na área escolar, pare antes da faixa.');return;}
-      if(state.car.speed<1.4){
+      if(Math.abs(state.car.speed)<1.4){
         state.distance=stopY-4;
         state.car.speed=0;
         state.phase='schoolCrossing';
@@ -635,54 +820,19 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
 
   function updateCrossing(dt){
     const intersectionY=1400;
-    // A linha branca desenhada no cruzamento fica em intersectionY + 66.
-    // Como o carro permanece fixo na tela, estes valores fazem o para-choque
-    // parar VISUALMENTE antes da linha e tratam qualquer invasão no vermelho como falha.
     const stopY=intersectionY-102;
     const redLineLimit=intersectionY-88;
-    const triggerDistance=stopY-(stopY*.20); // entra nos 20% finais da aproximação
-    const greenDelay=7;
+    const triggerDistance=stopY-(stopY*.20);
 
-    // O ciclo do semáforo começa quando o jogador entra na zona de aproximação,
-    // e não apenas depois que o carro já está completamente parado.
     if(state.distance>=triggerDistance&&!state.signalTimerStarted){
-      state.signalTimerStarted=true;
-      state.signalTimer=0;
-      state.pedestrianAlert=true;
-      showToast('SINAL VERMELHO • VERDE EM 7s',1.4);
+      startSignalCycle();state.pedestrianAlert=true;
+      showToast('SEMÁFORO ATIVO • CICLO 10s VERDE / 4s AMARELO',1.5);
     }
+    updateSignalCycle(dt);
+    if(checkIntersectionDecision(redLineLimit,stopY))return;
 
-    if(state.signalTimerStarted&&!state.lightGreen){
-      state.signalTimer+=dt;
-      if(state.signalTimer>=greenDelay){
-        state.signalTimer=greenDelay;
-        state.lightGreen=true;
-        showToast('SINAL VERDE • PASSE O CRUZAMENTO',1.5);
-        if(state.phase==='hold')state.phase='released';
-      }
-    }
-
-    // Enquanto o sinal continua vermelho, a linha de retenção é obrigatória.
-    if(!state.lightGreen&&state.phase==='drive'&&state.distance>=stopY-30){
-      if(state.distance>=redLineLimit){
-        state.distance=stopY;state.car.speed=0;
-        fail('Você avançou a linha de retenção com o sinal vermelho. Pare totalmente ANTES da faixa e aguarde o verde.');return;
-      }
-      if(state.car.speed<1.4){
-        state.distance=stopY;
-        state.car.speed=0;
-        state.phase='hold';
-        state.stoppedCorrectly=true;
-        showToast('PAROU NO VERMELHO • AGUARDE O VERDE',1.3);
-      }
-    }
-
-    // O carro fica retido somente enquanto o vermelho estiver ativo.
-    if(state.phase==='hold'&&state.lightGreen)state.phase='released';
-    if(state.phase==='released')state.phase='drive';
-
-    // A fase termina assim que o veículo efetivamente deixa o cruzamento para trás.
-    if(state.lightGreen&&state.distance>=levels[2].target)complete();
+    // Depois de entrar legalmente no cruzamento, o condutor pode concluir a passagem mesmo se o ciclo mudar.
+    if(state.intersectionEntered&&state.distance>=levels[2].target)complete();
   }
 
   function updatePhase4(dt){
@@ -691,49 +841,21 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     const intersectionRedLineLimit=intersectionY-88;
     const intersectionTrigger=intersectionStopY-(intersectionStopY*.20);
     const intersectionExit=1310;
-    const greenDelay=7;
     const pedestrianStopY=2020;
 
-    // Etapa 1: repete a lógica aprendida na fase anterior.
+    // Etapa 1: cruzamento com ciclo semafórico completo. O carro nunca é travado automaticamente.
     if(state.phase4Step==='intersection'){
       if(state.distance>=intersectionTrigger&&!state.signalTimerStarted){
-        state.signalTimerStarted=true;
-        state.signalTimer=0;
-        showToast('CRUZAMENTO À FRENTE • SINAL VERMELHO',1.3);
+        startSignalCycle();showToast('CRUZAMENTO À FRENTE • OBSERVE O CICLO DO SEMÁFORO',1.4);
       }
+      updateSignalCycle(dt);
+      if(checkIntersectionDecision(intersectionRedLineLimit,intersectionStopY))return;
 
-      if(state.signalTimerStarted&&!state.lightGreen){
-        state.signalTimer+=dt;
-        if(state.signalTimer>=greenDelay){
-          state.signalTimer=greenDelay;
-          state.lightGreen=true;
-          showToast('SINAL VERDE • ATRAVESSE O CRUZAMENTO',1.5);
-          if(state.phase==='hold')state.phase='released';
-        }
-      }
-
-      if(!state.lightGreen&&state.phase==='drive'&&state.distance>=intersectionStopY-30){
-        if(state.distance>=intersectionRedLineLimit){
-          state.distance=intersectionStopY;state.car.speed=0;
-          fail('Você avançou a linha de retenção com o sinal vermelho. Pare totalmente ANTES da faixa e aguarde o verde.');return;
-        }
-        if(state.car.speed<1.4){
-          state.distance=intersectionStopY;
-          state.car.speed=0;
-          state.phase='hold';
-          state.stoppedCorrectly=true;
-          showToast('PAROU NO VERMELHO • AGUARDE O VERDE',1.3);
-        }
-      }
-
-      if(state.phase==='hold'&&state.lightGreen)state.phase='released';
-      if(state.phase==='released')state.phase='drive';
-
-      if(state.lightGreen&&state.distance>=intersectionExit){
+      if(state.intersectionEntered&&state.distance>=intersectionExit){
         state.phase4IntersectionDone=true;
+        state.crossTraffic=[];state.crossTrafficStopLatched=false;
         state.phase4Step='approachPedestrian';
-        state.phase='drive';
-        state.pedestrianAlert=false;
+        state.phase='drive';state.pedestrianAlert=false;
         showToast('CRUZAMENTO CONCLUÍDO • ATENÇÃO À FAIXA À FRENTE',1.8);
       }
       return;
@@ -750,7 +872,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
         if(state.distance>pedestrianStopY+8){
           fail('Você passou pela faixa sem dar preferência ao pedestre. Pare antes da linha e aguarde a travessia.');return;
         }
-        if(state.car.speed<1.4){
+        if(Math.abs(state.car.speed)<1.4){
           state.distance=pedestrianStopY-4;
           state.car.speed=0;
           state.phase='hold';
@@ -794,26 +916,26 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     const intersectionExit=2530;
     const pedStopY=3200;
     const parkingEnd=4320;
-    const greenDelay=7;
+    
 
-    // 1/5 — Lombada: via até 40 km/h, com redução obrigatória para 20 km/h no obstáculo.
+    // 1/5 — Via coletora 40 km/h; na aproximação e passagem pela lombada, 20 km/h.
     if(state.phase5Step==='bump'){
       if(state.distance>=260&&!state.pedestrianAlert){state.pedestrianAlert=true;showToast('1/5 • LOMBADA À FRENTE • REDUZA PARA 20 km/h',1.5);}
       if(state.distance>=bumpY-5){
-        if(state.car.speed>20.3){fail('Você passou pela lombada acima de 20 km/h. Reduza antes do obstáculo e observe o painel eletrônico.');return;}
+        if(Math.abs(state.car.speed)>20.3){fail('Você passou pela lombada acima de 20 km/h. Reduza antes do obstáculo e observe o painel eletrônico.');return;}
         state.phase5BumpDone=true;state.phase5Step='schoolApproach';state.pedestrianAlert=false;
         if(!state.phase5BumpSound){audio.bump();state.phase5BumpSound=true;}
-        showToast('1/5 • LOMBADA SUPERADA • ÁREA ESCOLAR À FRENTE',1.5);
+        showToast('1/5 • LOMBADA SUPERADA • VIA LOCAL: 30 km/h',1.5);
       }
       return;
     }
 
-    // 2/5 — Área escolar: 20 km/h e parada obrigatória antes da faixa.
+    // 2/5 — Após a lombada, via local a 30 km/h até concluir escola e cruzamento.
     if(state.phase5Step==='schoolApproach'){
-      if(state.distance>=1000&&!state.pedestrianAlert){state.pedestrianAlert=true;showToast('2/5 • ÁREA ESCOLAR • LIMITE 20',1.4);}
+      if(state.distance>=1000&&!state.pedestrianAlert){state.pedestrianAlert=true;showToast('2/5 • ÁREA ESCOLAR • LIMITE 30',1.4);}
       if(state.phase==='drive'&&state.distance>=schoolStopY-28){
         if(state.distance>schoolStopY+7){fail('Você passou da linha de retenção na área escolar. Pare antes da faixa.');return;}
-        if(state.car.speed<1.4){
+        if(Math.abs(state.car.speed)<1.4){
           state.distance=schoolStopY-4;state.car.speed=0;state.phase='schoolCrossing';state.phase5Step='schoolCrossing';
           state.holdTimer=0;state.crossT=0;state.stoppedCorrectly=true;
           showToast('2/5 • PARADA CORRETA • AGUARDE AS CRIANÇAS',1.5);
@@ -827,30 +949,24 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
       const p=[0,1,2].map(schoolChildProgress);state.crossT=(p[0]+p[1]+p[2])/3;
       if(p.every(v=>v>=1)){
         state.phase5SchoolDone=true;state.phase5Step='intersectionApproach';state.phase='drive';state.car.speed=0;
-        state.holdTimer=0;state.crossT=0;state.signalTimer=0;state.signalTimerStarted=false;state.lightGreen=false;state.pedestrianAlert=false;
+        state.holdTimer=0;state.crossT=0;state.signalTimer=0;state.signalTimerStarted=false;state.lightGreen=false;state.signalState='red';state.horizontalSignal='green';state.signalStage='horizontalGreen';state.intersectionEntered=false;state.stoppedCorrectly=false;state.pedestrianAlert=false;
         showToast('2/5 • FAIXA LIVRE • SIGA PARA O CRUZAMENTO',1.5);
       }
       return;
     }
 
-    // 3/5 — Semáforo: ciclo de 7 segundos começa na aproximação.
+    // 3/5 — Semáforo: ciclo alternado 10s verde + 4s amarelo para cada sentido.
     if(state.phase5Step==='intersectionApproach'){
       if(state.distance>=intersectionTrigger&&!state.signalTimerStarted){
-        state.signalTimerStarted=true;state.signalTimer=0;showToast('3/5 • SINAL VERMELHO • APROXIME-SE E PARE',1.4);
+        startSignalCycle();showToast('3/5 • CRUZAMENTO • OBSERVE O SEMÁFORO',1.4);
       }
-      if(state.signalTimerStarted&&!state.lightGreen){
-        state.signalTimer+=dt;
-        if(state.signalTimer>=greenDelay){state.signalTimer=greenDelay;state.lightGreen=true;showToast('3/5 • SINAL VERDE • PODE SEGUIR',1.4);if(state.phase==='hold')state.phase='released';}
-      }
-      if(!state.lightGreen&&state.phase==='drive'&&state.distance>=intersectionStopY-30){
-        if(state.distance>=intersectionRedLineLimit){state.distance=intersectionStopY;state.car.speed=0;fail('Você avançou a linha de retenção com o sinal vermelho. Pare totalmente ANTES da faixa e aguarde o verde.');return;}
-        if(state.car.speed<1.4){state.distance=intersectionStopY;state.car.speed=0;state.phase='hold';showToast('3/5 • PAROU ANTES DA LINHA • AGUARDE',1.2);}
-      }
-      if(state.phase==='hold'&&state.lightGreen)state.phase='released';
-      if(state.phase==='released')state.phase='drive';
-      if(state.lightGreen&&state.distance>=intersectionExit){
-        state.phase5IntersectionDone=true;state.phase5Step='pedestrianApproach';state.pedestrianAlert=false;state.phase='drive';
-        showToast('3/5 • CRUZAMENTO CONCLUÍDO • FAIXA À FRENTE',1.5);
+      updateSignalCycle(dt);
+      if(checkIntersectionDecision(intersectionRedLineLimit,intersectionStopY))return;
+
+      if(state.intersectionEntered&&state.distance>=intersectionExit){
+        state.phase5IntersectionDone=true;state.crossTraffic=[];state.crossTrafficStopLatched=false;
+        state.phase5Step='pedestrianApproach';state.pedestrianAlert=false;state.phase='drive';
+        showToast('3/5 • CRUZAMENTO CONCLUÍDO • VIA COLETORA: 40 km/h',1.6);
       }
       return;
     }
@@ -860,7 +976,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
       if(state.distance>=2800&&!state.pedestrianAlert){state.pedestrianAlert=true;showToast('4/5 • PEDESTRE À FRENTE • REDUZA',1.3);}
       if(state.phase==='drive'&&state.distance>=pedStopY-28){
         if(state.distance>pedStopY+8){fail('Você passou pela faixa sem dar preferência ao pedestre.');return;}
-        if(state.car.speed<1.4){state.distance=pedStopY-4;state.car.speed=0;state.phase='hold';state.phase5Step='pedestrianCrossing';state.holdTimer=0;state.crossT=0;showToast('4/5 • AGUARDE O PEDESTRE ATRAVESSAR',1.4);}
+        if(Math.abs(state.car.speed)<1.4){state.distance=pedStopY-4;state.car.speed=0;state.phase='hold';state.phase5Step='pedestrianCrossing';state.holdTimer=0;state.crossT=0;showToast('4/5 • AGUARDE O PEDESTRE ATRAVESSAR',1.4);}
       }
       return;
     }
@@ -886,7 +1002,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
       const atCurb=state.car.x>422;
       const yellowZone=FINAL_YELLOW_ZONES.some(([a,b])=>state.distance>a-carHalfLength&&state.distance<b+carHalfLength);
 
-      if(state.car.speed<1.4&&atCurb){
+      if(Math.abs(state.car.speed)<1.4&&atCurb){
         if(yellowZone){
           state.phase5ParkingWarn+=dt;
           if(state.phase5ParkingWarn>.55){fail('Você parou na faixa amarela em frente a uma garagem. Esse trecho deve permanecer livre. Estacione em uma das vagas brancas.');return;}
@@ -948,8 +1064,8 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
   }
 
   function drawSpeedLines(roadRight){
-    if(state.car.speed<22)return;
-    const strength=Math.min(1,(state.car.speed-20)/25);ctx.fillStyle='rgba(255,255,255,'+(0.18*strength)+')';
+    const visualSpeed=Math.abs(state.car.speed);if(visualSpeed<22)return;
+    const strength=Math.min(1,(visualSpeed-20)/25);ctx.fillStyle='rgba(255,255,255,'+(0.18*strength)+')';
     const off=(state.distance*2.4)%70;const rx=roadRight-17;for(let y=-70+off;y<H;y+=70){ctx.fillRect(150,y,3,18+30*strength);ctx.fillRect(rx,y+28,3,18+30*strength);}
   }
 
@@ -985,7 +1101,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
 
   function drawLevel2(){
     const schoolY=sy(1240);if(schoolY>-150&&schoolY<H+100)drawSchool(25,schoolY-80);
-    drawBigSpeedSign(535,sy(930),'20');drawRoadNumber(sy(1070),'20');
+    drawBigSpeedSign(535,sy(930),'30');drawRoadNumber(sy(1070),'30');
     const stop=sy(1440);drawStopLineAndCrosswalk(stop);
     const left=ROAD_L-18,right=ROAD_R+18;
     if(stop>-110&&stop<H+110){
@@ -1014,26 +1130,18 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
 
   function drawLevel3(){
     const crossY=sy(1400);drawIntersection(crossY);
-    drawTrafficLight(510,crossY+22,state.lightGreen);
-    if(state.signalTimerStarted&&!state.lightGreen)drawSignalCountdown();
-    if(!state.lightGreen&&state.signalTimerStarted){
-      const q=(state.levelTime*110)%760-90;
-      drawNpcCar(q,crossY-43,'#c95b5b',true);
-      drawNpcCar(W-q,crossY+42,'#5f8cc9',true);
-    }
+    drawIntersectionSignals(crossY);
+    if(state.signalTimerStarted)drawSignalCountdown();
+    if(state.signalTimerStarted)drawCrossTraffic(crossY);
   }
 
   function drawLevel4(){
     // Primeiro obstáculo: cruzamento com semáforo.
     const crossY=sy(1040);
     drawIntersection(crossY);
-    drawTrafficLight(510,crossY+22,state.lightGreen);
-    if(state.signalTimerStarted&&!state.lightGreen)drawSignalCountdown();
-    if(!state.lightGreen&&state.signalTimerStarted&&state.phase4Step==='intersection'){
-      const q=(state.levelTime*110)%760-90;
-      drawNpcCar(q,crossY-43,'#c95b5b',true);
-      drawNpcCar(W-q,crossY+42,'#5f8cc9',true);
-    }
+    drawIntersectionSignals(crossY);
+    if(state.signalTimerStarted)drawSignalCountdown();
+    if(state.signalTimerStarted&&state.phase4Step==='intersection')drawCrossTraffic(crossY);
 
     // Segundo obstáculo: faixa de pedestres, posicionada depois do cruzamento.
     const stop=sy(2020);
@@ -1058,14 +1166,14 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     const signX=roadRight+53;
     const boardX=roadRight+40;
 
-    // 1/5 — limite geral 40, aviso de 20 e lombada eletrônica com leitura em tempo real.
+    // 1/5 — via coletora 40; redução para 20 na aproximação e passagem pela lombada.
     drawBigSpeedSign(signX,sy(180),'40');
     drawBigSpeedSign(signX,sy(360),'20');drawRoadNumber(sy(470),'20');
-    drawElectronicSpeedBoard(boardX,sy(535),state.car.speed);drawSpeedBump(sy(650),roadRight);
+    drawElectronicSpeedBoard(boardX,sy(535),Math.abs(state.car.speed));drawSpeedBump(sy(650),roadRight);
 
     // 2/5 — área escolar + crianças
     const schoolStop=sy(1380);const schoolY=sy(1170);if(schoolY>-150&&schoolY<H+100)drawSchool(25,schoolY-80);
-    drawBigSpeedSign(signX,sy(1000),'20');drawStopLineAndCrosswalk(schoolStop,ROAD_R);
+    drawBigSpeedSign(signX,sy(1000),'30');drawStopLineAndCrosswalk(schoolStop,ROAD_R);
     if(schoolStop>-110&&schoolStop<H+110){
       const left=ROAD_L-18,right=ROAD_R+18,ys=[schoolStop-73,schoolStop-60,schoolStop-86],shirts=['#f3cd55','#e7785f','#6fa4d4'];
       for(let i=0;i<3;i++){
@@ -1078,9 +1186,12 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     }
 
     // 3/5 — cruzamento
-    const crossY=sy(2260);drawIntersection(crossY,ROAD_R);drawTrafficLight(510,crossY+22,state.lightGreen);
-    if(state.phase5Step==='intersectionApproach'&&state.signalTimerStarted&&!state.lightGreen)drawSignalCountdown();
-    if(state.phase5Step==='intersectionApproach'&&!state.lightGreen&&state.signalTimerStarted){const q=(state.levelTime*110)%760-90;drawNpcCar(q,crossY-43,'#c95b5b',true);drawNpcCar(W-q,crossY+42,'#5f8cc9',true);}
+    const crossY=sy(2260);drawIntersection(crossY,ROAD_R);drawIntersectionSignals(crossY);
+    if(state.phase5Step==='intersectionApproach'&&state.signalTimerStarted)drawSignalCountdown();
+    if(state.phase5Step==='intersectionApproach'&&state.signalTimerStarted)drawCrossTraffic(crossY);
+
+    // Após concluir escola + cruzamento, o limite volta a 40 km/h.
+    drawBigSpeedSign(signX,sy(2700),'40');drawRoadNumber(sy(2790),'40');
 
     // 4/5 — pedestre
     const pedStop=sy(3200);drawStopLineAndCrosswalk(pedStop,ROAD_R);
@@ -1169,11 +1280,11 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
 
   function drawStopLineAndCrosswalk(stopY,roadRight=ROAD_R){
     if(stopY<-110||stopY>H+110)return;
-    // O veículo vem de baixo para cima. A linha de retenção fica ANTES da
-    // zebra e sempre alguns pixels à frente do para-choque do carro parado.
+    // Via vertical: a zebra usa barras VERTICAIS (paralelas ao eixo da via),
+    // enquanto a linha de retenção permanece horizontal antes da travessia.
     ctx.fillStyle='#f6f4e9';
     ctx.fillRect(ROAD_L+12,stopY-35,roadRight-ROAD_L-24,7);
-    for(let yy=stopY-92;yy<=stopY-50;yy+=13)ctx.fillRect(ROAD_L+16,yy,roadRight-ROAD_L-32,7);
+    for(let xx=ROAD_L+18;xx<=roadRight-26;xx+=22)ctx.fillRect(xx,stopY-92,10,42);
     pixelText('PARE',PLAYER_LANE_X,stopY+28,17,'#fff','center');
   }
 
@@ -1189,12 +1300,18 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
   }
 
   function drawSignalCountdown(){
-    const remaining=Math.max(0,Math.ceil(7-state.signalTimer));
-    const x=198,y=205,w=260,h=62;
+    if(!state.signalTimerStarted)return;
+    const x=188,y=205,w=280,h=62;
+    const color=state.signalState==='red'?'#ef5350':state.signalState==='yellow'?'#f4c542':'#4caf50';
+    const label=state.signalState==='red'?'SINAL VERMELHO':state.signalState==='yellow'?'SINAL AMARELO':'SINAL VERDE';
+    let sub='';
+    if(state.signalState==='red')sub='VERDE EM '+Math.max(1,Math.ceil(timeUntilVerticalGreen()))+'s';
+    else if(state.signalState==='green')sub='AMARELO EM '+Math.max(1,Math.ceil(state.signalRemaining))+'s';
+    else sub='VERMELHO EM '+Math.max(1,Math.ceil(state.signalRemaining))+'s';
     ctx.fillStyle='rgba(7,19,25,.96)';ctx.fillRect(x,y,w,h);
-    ctx.strokeStyle='#ef5350';ctx.lineWidth=3;ctx.strokeRect(x,y,w,h);
-    pixelText('SINAL VERMELHO',x+w/2,y+18,14,'#fff','center');
-    pixelText('VERDE EM '+remaining+'s',x+w/2,y+43,18,'#f4c542','center');
+    ctx.strokeStyle=color;ctx.lineWidth=3;ctx.strokeRect(x,y,w,h);
+    pixelText(label,x+w/2,y+18,14,'#fff','center');
+    pixelText(sub,x+w/2,y+43,18,color,'center');
   }
 
 
@@ -1211,7 +1328,29 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
   function drawSchool(x,y){if(y<-130||y>H+120)return;ctx.fillStyle='#ddb85b';ctx.fillRect(x,y,120,105);ctx.fillStyle='#b44545';ctx.fillRect(x-10,y-12,140,18);ctx.fillStyle='#5f7f9a';ctx.fillRect(x+18,y+25,25,22);ctx.fillRect(x+78,y+25,25,22);ctx.fillStyle='#6e4f39';ctx.fillRect(x+45,y+59,31,46);pixelText('ESCOLA',x+60,y+15,12,'#172d38','center');}
   function drawSmallBuilding(x,y,w,h,label){ctx.fillStyle='#8b5e4a';ctx.fillRect(x,y,w,h);ctx.fillStyle='#c98a64';ctx.fillRect(x+6,y+6,w-12,h-12);ctx.fillStyle='#4f6c7d';ctx.fillRect(x+14,y+20,18,14);ctx.fillRect(x+w-34,y+20,18,14);pixelText(label,x+w/2,y+h-10,9,'#fff','center');}
   function drawTree(x,y){ctx.fillStyle='#5c3c2b';ctx.fillRect(x-5,y,10,22);ctx.fillStyle='#62686c';ctx.fillRect(x-17,y-22,34,26);ctx.fillStyle='#777d81';ctx.fillRect(x-11,y-32,22,14);}
-  function drawTrafficLight(x,y,green){if(y<-100||y>H+120)return;ctx.fillStyle='#18232a';ctx.fillRect(x,y-74,30,70);ctx.fillStyle=green?'#5b2626':'#ef5350';ctx.fillRect(x+9,y-63,12,12);ctx.fillStyle='#5e5127';ctx.fillRect(x+9,y-43,12,12);ctx.fillStyle=green?'#4caf50':'#234d2b';ctx.fillRect(x+9,y-23,12,12);ctx.fillStyle='#555';ctx.fillRect(x+13,y-4,5,44);}
+  function drawTrafficLight(x,y,stateName='red'){
+    if(y<-100||y>H+120)return;
+    ctx.fillStyle='#18232a';ctx.fillRect(x,y-74,30,70);
+    ctx.fillStyle=stateName==='red'?'#ef5350':'#5b2626';ctx.fillRect(x+9,y-63,12,12);
+    ctx.fillStyle=stateName==='yellow'?'#f4c542':'#5e5127';ctx.fillRect(x+9,y-43,12,12);
+    ctx.fillStyle=stateName==='green'?'#4caf50':'#234d2b';ctx.fillRect(x+9,y-23,12,12);
+    ctx.fillStyle='#555';ctx.fillRect(x+13,y-4,5,44);
+  }
+
+  function drawIntersectionSignals(crossY){
+    // Simplificado: apenas um semáforo ilustrativo para o sentido do jogador.
+    // Fica na calçada, ao lado direito da via, abaixo da linha de retenção.
+    const signalX=ROAD_R+28;
+    const signalY=crossY+110;
+    drawTrafficLight(signalX,signalY,state.signalState);
+  }
+  function drawCrossTraffic(crossY){
+    for(const c of state.crossTraffic){
+      if(c.mode==='done')continue;
+      drawNpcCar(c.x,crossY+c.lane,c.color,true);
+    }
+  }
+
   function drawNpcCar(x,y,color,horizontal=false){ctx.save();ctx.translate(Math.round(x),Math.round(y));if(horizontal)ctx.rotate(Math.PI/2);ctx.fillStyle='#0a0a0a';ctx.fillRect(-13,-22,26,44);ctx.fillStyle=color;ctx.fillRect(-10,-20,20,40);ctx.fillStyle='#a6d0df';ctx.fillRect(-7,-12,14,11);ctx.fillStyle='#163443';ctx.fillRect(-7,3,14,9);ctx.restore();}
   function drawPerson(x,y,shirt){ctx.fillStyle='#6b4932';ctx.fillRect(x-4,y-12,8,7);ctx.fillStyle=shirt;ctx.fillRect(x-6,y-5,12,12);ctx.fillStyle='#222';ctx.fillRect(x-5,y+7,4,8);ctx.fillRect(x+1,y+7,4,8);}
   function drawWalkingPerson(x,y,shirt,step){
@@ -1264,36 +1403,33 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
   document.querySelectorAll('[data-tap]').forEach(btn=>btn.addEventListener('click',()=>{if(btn.dataset.tap==='pause')togglePause();if(btn.dataset.tap==='restart'){resetState();showMission();}}));
 
   startBtn.addEventListener('click',advanceOverlay);
-  introShareBtn.addEventListener('click',shareGame);
-  finalShareBtn.addEventListener('click',shareGame);
-  waShareBtn.addEventListener('click',()=>openShareNetwork('wa'));
-  fbShareBtn.addEventListener('click',()=>openShareNetwork('fb'));
-  xShareBtn.addEventListener('click',()=>openShareNetwork('x'));
+  introShareBtn.addEventListener('click',()=>shareGame('game'));
+  finalShareBtn.addEventListener('click',()=>shareGame('result'));
+  document.querySelectorAll('[data-share-network]').forEach(btn=>btn.addEventListener('click',()=>openShareNetwork(btn.dataset.shareNetwork,'game')));
+  document.querySelectorAll('[data-share-copy]').forEach(btn=>btn.addEventListener('click',copyShareLink));
+  waShareBtn.addEventListener('click',()=>openShareNetwork('wa','result'));
+  fbShareBtn.addEventListener('click',()=>openShareNetwork('fb','result'));
+  xShareBtn.addEventListener('click',()=>openShareNetwork('x','result'));
   copyShareBtn.addEventListener('click',copyShareLink);
   soundBtn.addEventListener('click',()=>audio.toggle());
   gameMuteBtn.addEventListener('click',e=>{e.stopPropagation();audio.toggle();});
-  fullscreenBtn.addEventListener('click',async()=>{if(!document.fullscreenEnabled){showToast('TELA CHEIA NÃO DISPONÍVEL',1.2);return;}try{if(!document.fullscreenElement){await shell.requestFullscreen();try{if(screen.orientation&&screen.orientation.lock)await screen.orientation.lock('portrait-primary');}catch(_e){}}else await document.exitFullscreen();}catch(e){showToast('TELA CHEIA NÃO DISPONÍVEL',1.2);}});
   document.addEventListener('visibilitychange',()=>{if(document.hidden&&state.running)state.paused=true;});
   window.addEventListener('orientationchange',()=>{if(window.matchMedia('(orientation: landscape)').matches&&state.running){state.paused=true;}else if(state.paused){state.last=performance.now();}});
 
   setInterval(()=>{
     const l=levels[state.level];
     levelHud.textContent='FASE '+(state.level+1)+'/5';
-    speedHud.textContent=Math.round(state.car.speed)+' km/h';
+    speedHud.textContent=state.car.speed<-.5?'R '+Math.round(Math.abs(state.car.speed))+' km/h':Math.round(Math.abs(state.car.speed))+' km/h';
     scoreHud.textContent='SEGURANÇA '+String(state.score).padStart(3,'0');
     if(state.level===1&&state.phase==='schoolCrossing'){
       const done=[0,1,2].filter(i=>schoolChildProgress(i)>=1).length;
       missionRibbon.textContent='PARE • CRIANÇAS ATRAVESSANDO '+done+'/3 • AGUARDE A FAIXA FICAR LIVRE';
     }else if(state.level===1&&state.crossDone){
-      missionRibbon.textContent='FAIXA LIVRE • SIGA COM ATENÇÃO • LIMITE 20 km/h';
-    }else if(state.level===2&&state.signalTimerStarted&&!state.lightGreen){
-      missionRibbon.textContent='SINAL VERMELHO • VERDE EM '+Math.max(0,Math.ceil(7-state.signalTimer))+'s • PARE ANTES DA LINHA';
-    }else if(state.level===2&&state.lightGreen){
-      missionRibbon.textContent='SINAL VERDE • PASSE O CRUZAMENTO';
-    }else if(state.level===3&&state.phase4Step==='intersection'&&state.signalTimerStarted&&!state.lightGreen){
-      missionRibbon.textContent='1/2 • SINAL VERMELHO • VERDE EM '+Math.max(0,Math.ceil(7-state.signalTimer))+'s • PARE';
-    }else if(state.level===3&&state.phase4Step==='intersection'&&state.lightGreen){
-      missionRibbon.textContent='1/2 • SINAL VERDE • ATRAVESSE O CRUZAMENTO';
+      missionRibbon.textContent='FAIXA LIVRE • SIGA COM ATENÇÃO • LIMITE 30 km/h';
+    }else if(state.level===2&&state.signalTimerStarted){
+      missionRibbon.textContent=signalStatusText();
+    }else if(state.level===3&&state.phase4Step==='intersection'&&state.signalTimerStarted){
+      missionRibbon.textContent=signalStatusText('1/2');
     }else if(state.level===3&&state.phase4Step==='approachPedestrian'){
       missionRibbon.textContent='2/2 • FAIXA À FRENTE • REDUZA • DÊ PREFERÊNCIA';
     }else if(state.level===3&&state.phase4Step==='pedestrian'){
@@ -1301,17 +1437,15 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:29px
     }else if(state.level===3&&state.phase4Step==='done'){
       missionRibbon.textContent='2/2 • FAIXA LIVRE • SIGA COM ATENÇÃO';
     }else if(state.level===4&&state.phase5Step==='bump'){
-      missionRibbon.textContent=state.distance<250?'1/5 • VIA ATÉ 40 km/h • LOMBADA À FRENTE':'1/5 • LOMBADA • REDUZA PARA 20 km/h • PAINEL MOSTRA SUA VELOCIDADE';
+      missionRibbon.textContent=state.distance<260?'1/5 • VIA COLETORA • LIMITE 40 km/h • LOMBADA À FRENTE':'1/5 • LOMBADA • LIMITE 20 km/h • PAINEL MOSTRA SUA VELOCIDADE';
     }else if(state.level===4&&state.phase5Step==='schoolApproach'){
-      missionRibbon.textContent=state.distance<940?'2/5 • ÁREA ESCOLAR À FRENTE • REDUZA PARA 20':'2/5 • ÁREA ESCOLAR • 20 km/h • PARE ANTES DA FAIXA';
+      missionRibbon.textContent=state.distance<940?'2/5 • VIA LOCAL • LIMITE 30 km/h • ÁREA ESCOLAR À FRENTE':'2/5 • VIA LOCAL 30 km/h • PARE ANTES DA FAIXA';
     }else if(state.level===4&&state.phase5Step==='schoolCrossing'){
       const done=[0,1,2].filter(i=>schoolChildProgress(i)>=1).length;missionRibbon.textContent='2/5 • CRIANÇAS ATRAVESSANDO '+done+'/3 • AGUARDE';
-    }else if(state.level===4&&state.phase5Step==='intersectionApproach'&&!state.lightGreen){
-      missionRibbon.textContent=state.signalTimerStarted?'3/5 • SINAL VERMELHO • VERDE EM '+Math.max(0,Math.ceil(7-state.signalTimer))+'s • PARE':'3/5 • CRUZAMENTO À FRENTE • ATENÇÃO';
-    }else if(state.level===4&&state.phase5Step==='intersectionApproach'&&state.lightGreen){
-      missionRibbon.textContent='3/5 • SINAL VERDE • ATRAVESSE O CRUZAMENTO';
+    }else if(state.level===4&&state.phase5Step==='intersectionApproach'&&state.signalTimerStarted){
+      missionRibbon.textContent=signalStatusText('3/5 • VIA LOCAL 30 km/h');
     }else if(state.level===4&&state.phase5Step==='pedestrianApproach'){
-      missionRibbon.textContent='4/5 • FAIXA À FRENTE • DÊ PREFERÊNCIA';
+      missionRibbon.textContent='4/5 • VIA COLETORA • LIMITE 40 km/h • FAIXA À FRENTE';
     }else if(state.level===4&&state.phase5Step==='pedestrianCrossing'){
       missionRibbon.textContent='4/5 • PEDESTRE ATRAVESSANDO • AGUARDE';
     }else if(state.level===4&&state.phase5Step==='parkingApproach'){
