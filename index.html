@@ -950,7 +950,7 @@
       </section>
 
       <aside class="control-help">
-        <strong>ROADQUEST v1.0.2 • COMO JOGAR</strong>
+        <strong>ROADQUEST v1.0.1 • COMO JOGAR</strong>
         <div class="desktop-only">
           No computador: use as setas ou WASD para dirigir. O carro só esterça
           quando está em movimento.
@@ -985,7 +985,7 @@
     <script>
       (() => {
         "use strict";
-        // RoadQuest v1.0.2 — Semana do Trânsito | Prefeitura de Itapetininga
+        // RoadQuest v1.0.1 — Semana do Trânsito | Prefeitura de Itapetininga
         const root = document.getElementById("gameRoot");
         const shell = document.getElementById("gameShell");
         const canvas = document.getElementById("game");
@@ -1450,7 +1450,7 @@
           missionText.textContent = "";
           missionLimit.style.display = "none";
           overlayTip.textContent =
-            "ROADQUEST v1.0.2 • 5 FASES • ESCOLHAS SEGURAS FAZEM VOCÊ AVANÇAR";
+            "ROADQUEST v1.0.1 • 5 FASES • ESCOLHAS SEGURAS FAZEM VOCÊ AVANÇAR";
           startBtn.textContent = "COMEÇAR";
           missionRibbon.textContent =
             "ROADQUEST • MISSÃO TRÂNSITO SEGURO • 18 A 25 DE SETEMBRO";
@@ -2586,12 +2586,11 @@
           ctx.fillStyle = "#282e33";
           ctx.fillRect(ROAD_L + 7, 0, 3, H);
           ctx.fillRect(roadRight - 4, 0, 4, H);
-          // Bordas brancas laterais da via.
-          // Na fase 5, a borda direita é interrompida somente no trecho de estacionamento.
+          // borda branca esquerda; nas fases 1–4 há também borda direita. Na fase 5,
+          // o asfalto segue até o meio-fio para permitir estacionamento na própria via.
           ctx.fillStyle = "#ece9dd";
           ctx.fillRect(ROAD_L + 12, 0, 3, H);
-          ctx.fillRect(ROAD_R - 15, 0, 3, H);
-          if (state.level === 4) eraseRightEdgeForParking();
+          if (state.level !== 4) ctx.fillRect(ROAD_R - 15, 0, 3, H);
           // Duas linhas amarelas contínuas separam as mãos da via.
           // Elas são fixas porque são marcação da pista, não um elemento de velocidade.
           ctx.fillStyle = "#e5cf61";
@@ -2912,26 +2911,6 @@
           };
         }
 
-        function eraseRightEdgeForParking() {
-          // Mantém a largura original da rua e remove somente a borda branca
-          // do lado direito ao longo da área de estacionamento da fase 5.
-          const parkingStart = Math.min(
-            FINAL_YELLOW_ZONES[0][0],
-            FINAL_PARKING_SPACES[0][0],
-          );
-          const parkingEnd = FINAL_PARKING_SPACES[FINAL_PARKING_SPACES.length - 1][1];
-          const seg = worldSegment(parkingStart, parkingEnd);
-
-          if (seg.bottom < 0 || seg.top > H) return;
-
-          const top = Math.max(0, seg.top);
-          const bottom = Math.min(H, seg.bottom);
-          if (bottom <= top) return;
-
-          ctx.fillStyle = "#343a40";
-          ctx.fillRect(ROAD_R - 16, top, 5, bottom - top);
-        }
-
         function drawFinalParkingStreet() {
           // Casas/garagens ficam depois da calçada. A faixa amarela é pintada no meio-fio,
           // enquanto as vagas brancas são demarcadas diretamente no asfalto da rua.
@@ -3230,6 +3209,7 @@
           ctx.save();
           ctx.translate(Math.round(x), Math.round(y));
           if (horizontal) ctx.rotate(Math.PI / 2);
+          ctx.scale(1.25, 1.25); // NOVO
           ctx.fillStyle = "#0a0a0a";
           ctx.fillRect(-13, -22, 26, 44);
           ctx.fillStyle = color;
@@ -3317,6 +3297,7 @@
         function drawCar(x, y) {
           ctx.save();
           ctx.translate(Math.round(x), Math.round(y));
+          ctx.scale(1.4, 1.4); // NOVO: aumenta 25%
           ctx.fillStyle = "rgba(0,0,0,.28)";
           ctx.fillRect(-15, -20, 30, 44);
           ctx.fillStyle = "#080808";
